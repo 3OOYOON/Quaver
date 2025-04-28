@@ -1,5 +1,5 @@
 # Instructions
-This document will provide instrunctions on running each aspect of the web project project
+This document will provide instrunctions on running each aspect of the web project.
 
 ## Website
 * Make sure to have Node.js installed on your device
