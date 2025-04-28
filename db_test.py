@@ -14,7 +14,7 @@ def get_connection(autocommit: bool = True) -> MySQLConnection:
         "password": config.tidb_password,
         "database": config.tidb_db_name,
         "autocommit": autocommit,
-        "use_pure": True,
+        "use_pure": True
     }
 
     if config.ca_path:
