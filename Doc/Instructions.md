@@ -2,9 +2,16 @@
 This document will provide instrunctions on running each aspect of the web project.
 
 ## Website
+### Without Docker
 * Make sure to have Node.js installed on your device
-* In terminial write: **node app.js**
+* In terminial write: `node app.js`
 * Then click on the website link in the terminal to view the website
+### With Docker
+* Make sure to have docker installed
+* In the terminal run: `bash run-with-docker.bash`
+  * This both builds the image and starts up a container
+  * This will take a while - around 5-10 minutes - to run
+* Click on the website link in the terminal to view the website
 
 ## Database
 * Website functionality for user contribution (account personalization, forum posting) (i.e. not hardcoded)
