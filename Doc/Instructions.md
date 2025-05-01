@@ -8,9 +8,8 @@ This document will provide instrunctions on running each aspect of the web proje
 * Then click on the website link in the terminal to view the website
 ### With Docker
 * Make sure to have docker installed
-* In the terminal run: `bash run-with-docker.bash`
-  * This both builds the image and starts up a container
-  * This will take a while - around 5-10 minutes - to run
+* Make sure you have pulled the latest commit
+* In the terminal run: `docker build -t quaver .`
 * Click on the website link in the terminal to view the website
 
 ## Database
