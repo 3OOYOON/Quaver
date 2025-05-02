@@ -3,7 +3,7 @@ from mysql.connector import MySQLConnection
 from mysql.connector.cursor import MySQLCursor
 from connect import get_connection
 
-
+# Don't add posts this way, this is for testing purposes only. Use the cursor execute stuff
 def add_post(post):
     parent = post['parent']
     if parent == None: parent = 'NULL'
