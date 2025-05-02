@@ -1,7 +1,7 @@
-from connect import get_connection
 import mysql.connector
 from mysql.connector import MySQLConnection
 from mysql.connector.cursor import MySQLCursor
+from connect import get_connection
 
 
 def make_table(table_name, query):
@@ -14,15 +14,15 @@ def main():
     make_table('users', """
                 CREATE TABLE users (
                     id INT AUTO_INCREMENT,
-                    username VARCHAR(255),
-                    test1 VARCHAR(255)
+                    username VARCHAR(255)
                 );
             """)
     make_table('posts', """
                 CREATE TABLE posts (
                     id INT AUTO_INCREMENT,
+                    forumText VARCHAR(255),
                     poster INT,
-                    test VARCHAR(255)
+                    parent INT
                 );
             """)
 
