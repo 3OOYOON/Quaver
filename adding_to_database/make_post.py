@@ -4,7 +4,7 @@ from mysql.connector.cursor import MySQLCursor
 from connect import get_connection
 
 # Don't add posts this way, this is for testing purposes only. Use the cursor execute stuff
-def add_post(post):
+def make_post(post):
     parent = post['parent']
     if parent == None: parent = 'NULL'
     query = f'''
@@ -23,7 +23,7 @@ def main():
         'forumText' : 'my first coolest forum post',
         'parent' : None
     }
-    add_post(post)
+    make_post(post)
 
 if __name__=='__main__':
     main()

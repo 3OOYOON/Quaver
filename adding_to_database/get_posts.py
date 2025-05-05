@@ -4,11 +4,10 @@ from mysql.connector.cursor import MySQLCursor
 from connect import get_connection
 
 
-def get_posts_by_user():
-    with get_connection(autocommit=True) as connection:
-        with connection.cursor() as cur:
-            cur.execute(f"DROP TABLE IF EXISTS {table_name};")
-            cur.execute(query)
+# def get_posts_by_user(userID):
+#     with get_connection(autocommit=True) as connection:
+#         with connection.cursor() as cur:
+#             cur.execute(user)
 
-def main():
-    get_posts_by_user("jimmy")
+# def main():
+#     get_posts_by_user(1)
