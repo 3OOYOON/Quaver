@@ -5,13 +5,13 @@ from connect import get_connection
 
 # Don't add posts this way, this is for testing purposes only. Use the cursor execute stuff
 def make_post(post):
-    parent = post['parent']
-    if parent == None: parent = 'NULL'
+    parentID = post['parentID']
+    if parentID == None: parentID = 'NULL'
     query = f'''
     INSERT INTO posts 
-        (poster, forumText, parent)
+        (posterID, forumText, parentID)
     VALUES
-        ({post['poster']}, '{post['forumText']}', {parent})
+        ({post['posterID']}, '{post['forumText']}', {parentID})
     '''
     with get_connection(autocommit=True) as connection:
         with connection.cursor() as cur:
@@ -19,9 +19,9 @@ def make_post(post):
 
 def main():
     post = {
-        'poster' : 1,
+        'posterID' : 1,
         'forumText' : 'my first coolest forum post',
-        'parent' : None
+        'parentID' : None
     }
     make_post(post)
 
