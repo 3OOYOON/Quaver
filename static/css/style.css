@@ -7,14 +7,17 @@
   --accent-clr: #5e63ff;
   --secondary-text-clr: #b0b3c1;
 }
+
 *{
   margin: 0;
   padding: 0;
 }
+
 html{
   font-family: Poppins, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.5rem;
 }
+
 body{
   min-height: 100vh;
   min-height: 100dvh;
@@ -23,6 +26,7 @@ body{
   display: grid;
   grid-template-columns: auto 1fr;
 }
+
 #sidebar{
   box-sizing: border-box;
   height: 100vh;
@@ -38,13 +42,16 @@ body{
   overflow: hidden;
   text-wrap: nowrap;
 }
+
 #sidebar.close{
   padding: 5px;
   width: 60px;
 }
+
 #sidebar ul{
   list-style: none;
 }
+
 #sidebar > ul > li:first-child{
   display: flex;
   justify-content: flex-end;
@@ -53,6 +60,7 @@ body{
     font-weight: 600;
   }
 }
+
 #sidebar ul li.active a{
   color: var(--accent-clr);
 
@@ -70,6 +78,7 @@ body{
   align-items: center;
   gap: 1em;
 }
+
 .dropdown-btn{
   width: 100%;
   text-align: left;
@@ -78,16 +87,20 @@ body{
   font: inherit;
   cursor: pointer;
 }
+
 #sidebar img{
   flex-shrink: 0;
   fill: var(--text-clr);
 }
+
 #sidebar a span, #sidebar .dropdown-btn span{
   flex-grow: 1;
 }
+
 #sidebar a:hover, #sidebar .dropdown-btn:hover{
   background-color: var(--hover-clr);
 }
+
 #sidebar .sub-menu{
   display: grid;
   grid-template-rows: 0fr;
@@ -97,18 +110,23 @@ body{
     overflow: hidden;
   }
 }
+
 #sidebar .sub-menu.show{
   grid-template-rows: 1fr;
 }
+
 .dropdown-btn img{
   transition: 200ms ease;
 }
+
 .rotate img:last-child{
   rotate: 180deg;
 }
+
 #sidebar .sub-menu a{
   padding-left: 2em;
 }
+
 #toggle-btn{
   margin-left: auto;
   padding: 1em;
@@ -121,6 +139,7 @@ body{
     transition: rotate 150ms ease;
   }
 }
+
 #toggle-btn:hover{
   background-color: var(--hover-clr);
 }
@@ -133,26 +152,30 @@ main p{
   margin-top: 5px;
   margin-bottom: 15px;
 }
-.container{
+
+.container {
   border: 1px solid var(--line-clr);
   border-radius: 1em;
   margin-bottom: 20px;
-  padding: min(3em, 15%);
-
-  h2, p { margin-top: 1em }
+  padding: 2em;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 @media(max-width: 800px){
   body{
     grid-template-columns: 1fr;
   }
+
   main{
     padding: 2em 1em 60px 1em;
   }
+
   .container{
     border: none;
     padding: 0;
   }
+
   #sidebar{
     height: 60px;
     width: 100%;
@@ -171,9 +194,11 @@ main p{
       align-items: center;
       overflow-x: scroll;
     }
+
     ul li{
       height: 100%;
     }
+
     ul a, ul .dropdown-btn{
       width: 60px;
       height: 60px;
@@ -201,9 +226,11 @@ main p{
       > div{
         overflow-x: auto;
       }
+
       li{
         display: inline-flex;
       }
+      
       a{
         box-sizing: border-box;
         padding: 1em;
@@ -212,65 +239,4 @@ main p{
       }
     }
   }
-}
-
-.banner {
-  width: 100%;
-  height: 380px;
-  overflow: hidden;
-  position: relative;
-}
-
-.banner-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.avatar {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  border: 5px solid white;
-  position: relative;
-  top: -80px; 
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 10;
-  background-color: white;
-}
-
-.profile-info {
-  text-align: center;
-  margin-top: 100px; 
-}
-
-.profile-info h1 {
-  margin: 10px 0 5px 0;
-  font-size: 1.8rem;
-}
-
-.profile-info span {
-  color: var(--secondary-text-clr);
-  font-size: 1rem;
-}
-
-.profile-info p {
-  margin-top: 15px;
-  color: var(--secondary-text-clr);
-}
-
-.profile-info ul.list {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-}
-
-.profile-info ul.list li {
-  margin: 8px 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5em;
 }

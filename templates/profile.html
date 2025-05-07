@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile</title>
   <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/profile.css">
   <script type="text/javascript" src="/static/js/sidebar.js" defer></script>
 </head>
 <body>
@@ -34,6 +35,12 @@
           <span>Settings</span>
         </a>
       </li>
+      <li>
+        <a href="/templates/profile.html">
+          <img src="/static/icons/ic--round-person.svg" alt="Home" style="width:25px; vertical-align:middle;">
+          <span>Profile</span>
+        </a>
+      </li>
       <a href="#" onclick="signOut();">Sign out</a>
     <script>
       function signOut() {
@@ -49,23 +56,20 @@
     <div class="banner">
       <img src="/static/images/profile_banner.jpg" alt="Banner Image" class="banner-img">
     </div>
-    
-    <img src="/static/images/profile_picture.jpg" class="avatar" alt="Profile Picture">
-    
-    <div class="container">
-      <div class="profile-info">
-        <h1>FirstName LastName</h1>
-        <span>@DeepFriedKeyCaps</span>
-        <p>❤️ Simply passionate about creating and transforming interfaces!</p>
-    
-        <ul class="list">
-          <li><img src="/static/images/place.svg" alt="Place">Rio de Janeiro, Brasil</li>
-          <li><img src="/static/images/url.svg" alt="URL">gabrieldesenvolvedor.com</li>
-          <li><img src="/static/images/joined.svg" alt="Joined">Joined October 2020</li>
-          <li><img src="/static/images/born.svg" alt="Born">Born the 19th of December 1998</li>
-        </ul>
+  
+    <div class="profile-wrapper">
+      <img src="/static/images/profile_picture.jpg" class="avatar" alt="Profile Picture">
+  
+      <div class="container">
+        <div class="profile-info">
+          <h1>FirstName LastName</h1>
+          <span>@DeepFriedKeyCaps</span>
+          <div class="container">
+            <p>❤️ Simply passionate about creating and transforming interfaces!</p>
+          </div>
+        </div>
       </div>
     </div>
-  </main>
+  </main> 
 </body>
 </html>
