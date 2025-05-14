@@ -1,30 +1,38 @@
-from connect import get_connection
 import mysql.connector
 from mysql.connector import MySQLConnection
 from mysql.connector.cursor import MySQLCursor
+from connect import get_connection
 
 
-def make_table(table_name, query):
+def make_table(table_name, fields):
     with get_connection(autocommit=True) as connection:
         with connection.cursor() as cur:
             cur.execute(f"DROP TABLE IF EXISTS {table_name};")
-            cur.execute(query)
+            cur.execute(f"CREATE TABLE {table_name} ({fields});")
 
 def main():
     make_table('users', """
-                CREATE TABLE users (
-                    id INT AUTO_INCREMENT,
-                    username VARCHAR(255),
-                    test1 VARCHAR(255)
-                );
-            """)
+               userID INT AUTO_INCREMENT,
+               username VARCHAR(255)
+               """)
     make_table('posts', """
-                CREATE TABLE posts (
-                    id INT AUTO_INCREMENT,
-                    poster INT,
-                    test VARCHAR(255)
-                );
-            """)
+               postID INT AUTO_INCREMENT,
+               parentID INT,
+               posterID INT,
+               forumText VARCHAR(255)
+               """)
+    make_table('postsToTags', """
+               postID INT,
+               tag VARCHAR(255)
+               """)
+    make_table('postsLikes', """
+               postID INT,
+               likerID INT
+               """)
+    make_table('follows', """
+               followerID INT,
+               followedID INT
+               """)
 
 if __name__=='__main__':
     main()
