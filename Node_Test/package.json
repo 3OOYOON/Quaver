@@ -1,0 +1,33 @@
+{
+  "name": "node_test",
+  "version": "1.0.0",
+  "description": "to test Quaver",
+  "main": "home.html",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3OOYOON/Quaver.git"
+  },
+  "keywords": [
+    "testing"
+  ],
+  "author": "Hanane Akeel",
+  "license": "MIT",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/3OOYOON/Quaver/issues"
+  },
+  "homepage": "https://github.com/3OOYOON/Quaver#readme",
+  "devDependencies": {
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "gulp": "^5.0.0",
+    "gulp-autoprefixer": "^9.0.0",
+    "gulp-babel": "^8.0.0",
+    "gulp-csslint": "^1.0.1",
+    "gulp-htmltidy": "^0.2.4",
+    "gulp-jshint": "^2.1.0"
+  }
+}

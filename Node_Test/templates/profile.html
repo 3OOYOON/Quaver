@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/profile.css">
+  <script type="text/javascript" src="/static/js/sidebar.js" defer></script>
+</head>
+<body>
+  <nav id="sidebar">
+    <ul>
+      <li>
+        <span class="logo">Quaver</span>
+        <button onclick=toggleSidebar() id="toggle-btn">
+          <img src="/static/icons/ic--round-double-arrow.svg" alt="Home" style="width:25px; vertical-align:middle;">
+        </button>
+      </li>
+      <li>
+        <a href="/templates/home.html">
+          <img src="/static/icons/ic--round-home.svg" alt="Home" style="width:25px; vertical-align:middle;">
+          <span>Home</span>
+        </a>
+      </li>
+      <li>
+        <a href="/templates/dashboard.html">
+          <img src="/static/icons/ic--round-dashboard.svg" alt="Home" style="width:25px; vertical-align:middle;">
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="/templates/settings.html">
+          <img src="/static/icons/ic--round-settings.svg" alt="Home" style="width:25px; vertical-align:middle;">
+          <span>Settings</span>
+        </a>
+      </li>
+      <li>
+        <a href="/templates/profile.html">
+          <img src="/static/icons/ic--round-person.svg" alt="Home" style="width:25px; vertical-align:middle;">
+          <span>Profile</span>
+        </a>
+      </li>
+      <a href="#" onclick="signOut();">Sign out</a>
+    <script>
+      function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+          console.log('User signed out.');
+        });
+      }
+    </script>
+    </ul>
+  </nav>
+  <main>
+    <div class="banner">
+      <img src="/static/images/profile_banner.jpg" alt="Banner Image" class="banner-img">
+    </div>
+  
+    <div class="profile-wrapper">
+      <img src="/static/images/profile_picture.jpg" class="avatar" alt="Profile Picture">
+  
+      <div class="container">
+        <div class="profile-info">
+          <h1>FirstName LastName</h1>
+          <span>@DeepFriedKeyCaps</span>
+          <div class="container">
+            <p>❤️ Simply passionate about creating and transforming interfaces!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main> 
+</body>
+</html>
