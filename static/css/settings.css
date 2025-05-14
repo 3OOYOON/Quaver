@@ -1,0 +1,10 @@
+.settings-row {
+  display: flex;
+}
+
+.settings-name-col {
+  flex: 20%;
+}
+.settings-val-col {
+  flex: 80%;
+}
