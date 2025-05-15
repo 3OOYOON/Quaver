@@ -4,18 +4,12 @@ from mysql.connector.cursor import MySQLCursor
 from connect import get_connection
 
 # Don't add posts this way, this is for testing purposes only. Use the cursor execute stuff
-def make_post(post):
-    parentID = post['parentID']
-    if parentID == None: parentID = 'NULL'
-    query = f'''
-    INSERT INTO posts 
-        (posterID, forumText, parentID)
-    VALUES
-        ({post['posterID']}, '{post['forumText']}', {parentID})
-    '''
+def make_post(post_info):
+    query = 'INSERT INTO posts (posterID, forumText, parentID) VALUES (%s, %s, %s)'
+    post_values = (post_info['posterID'], post_info['forumText'], post_info['parentID'])
     with get_connection(autocommit=True) as connection:
         with connection.cursor() as cur:
-            cur.execute(query)
+            cur.execute(query, post_values)
 
 def main():
     post = {

@@ -7,7 +7,11 @@ from get_posts import *
 
 
 def main():
-    userID = add_user('jimmy')
+    user_info = {
+        'username':'jimmy',
+        'password':'jimmy123'
+    }
+    userID = add_user(user_info)
 
     post = {
         'posterID' : userID,
@@ -31,7 +35,11 @@ def main():
     make_post(post)
 
 
-    otherID = add_user('otherjimmy')
+    user_info = {
+        'username':'otherjimmy',
+        'password':'other!jimmy123'
+    }
+    otherID = add_user(user_info)
 
     post = {
         'posterID' : otherID,
