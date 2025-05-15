@@ -36,20 +36,11 @@
         </a>
       </li>
       <li>
-        <a href="/templates/profile.html">
+        <a href="/templates/signUp.html">
           <img src="/static/icons/ic--round-person.svg" alt="Home" style="width:25px; vertical-align:middle;">
-          <span>Profile</span>
+          <span>Sign Up</span>
         </a>
       </li>
-      <a href="#" onclick="signOut();">Sign out</a>
-    <script>
-      function signOut() {
-        var auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-          console.log('User signed out.');
-        });
-      }
-    </script>
     </ul>
   </nav>
   <main>

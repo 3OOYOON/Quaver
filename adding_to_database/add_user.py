@@ -19,6 +19,15 @@ def get_userID_from_username(username):
             userID = cur.fetchall()[0][0]
     return userID
 
+def signUp(username, email, pword, cpword):
+    if (pword != cpword):
+        return failure
+    if email isnt in database
+    
+    if username isnt in database
+    
+    add_user(username)
+    
 
 def main():
     user_info = {
