@@ -1,10 +1,21 @@
 .settings-row {
-  display: flex;
+    display: flex;
 }
 
 .settings-name-col {
-  flex: 20%;
+    flex: 20%;
 }
 .settings-val-col {
-  flex: 80%;
+    flex: 80%;
+}
+
+.settings-button {
+    border-radius: 5px;
+    /* background-color: var(line-clr); */
+    border: 3px solid var(--line-clr);
+    padding: 5px;
+}
+
+.settings-button:hover {
+    background-color: var(hover-clr);
 }
