@@ -6,14 +6,32 @@
   padding: 0 2em;
 }
 
+.search-bar-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
 .search-bar {
-  flex: 1;
-  padding: 0.75em 1em;
+  width: 100%;
+  padding: 0.75em 1em 0.75em 2.5em; /* left padding for icon */
   font-size: 1rem;
   border-radius: 0.5em;
   border: 1px solid var(--line-clr);
   background-color: var(--base-clr);
   color: var(--text-clr);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1em;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.2em;
+  height: 1.2em;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .search-bar::placeholder {
@@ -34,3 +52,72 @@
 .search-btn:hover {
   background-color: var(--hover-clr);
 }
+
+.search-bar-chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 2.5em;
+  border: 1px solid var(--line-clr);
+  border-radius: 0.5em;
+  background: var(--base-clr);
+  padding: 0.3em 0.8em 0.3em 2.5em;
+  gap: 0.4em;
+  position: relative;
+  width: 100%;
+  cursor: text;
+}
+
+.search-bar-chip-input {
+  border: none;
+  background: transparent;
+  color: var(--text-clr);
+  font-size: 1rem;
+  outline: none;
+  min-width: 120px;
+  flex: 1;
+  padding: 0.4em 0;
+}
+
+.chip {
+  background: var(--line-clr);
+  color: var(--text-clr);
+  border-radius: 1em;
+  padding: 0.25em 0.8em;
+  display: flex;
+  align-items: center;
+  font-size: 0.95em;
+  margin-right: 0.2em;
+}
+
+.chip .chip-remove {
+  margin-left: 0.4em;
+  cursor: pointer;
+  font-weight: bold;
+  color: var(--accent-clr);
+}
+
+.chip-suggestions {
+  display: none;
+  position: absolute;
+  top: 110%;
+  left: 0;
+  background: var(--base-clr);
+  border: 1px solid var(--line-clr);
+  border-radius: 0.5em;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 10;
+  min-width: 200px;
+}
+
+.chip-suggestion {
+  padding: 0.5em 1em;
+  cursor: pointer;
+  color: var(--text-clr);
+}
+
+.chip-suggestion:hover {
+  background: var(--hover-clr);
+}
+
+

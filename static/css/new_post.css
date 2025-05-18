@@ -1,0 +1,25 @@
+.new-post-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.6em 1.2em;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5em;
+  background-color: var(--accent-clr);
+  color: var(--text-clr);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-left: 10px;
+}
+
+.new-post-btn:hover {
+  background-color: var(--hover-clr);
+}
+
+.new-post-icon {
+  width: 1.3em;
+  height: 1.3em;
+  vertical-align: middle;
+}
