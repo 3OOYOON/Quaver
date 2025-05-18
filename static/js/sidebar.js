@@ -22,10 +22,3 @@ function toggleSubMenu(button){
     toggleButton.classList.toggle('rotate')
   }
 }
-
-function closeAllSubMenus(){
-  Array.from(sidebar.getElementsByClassName('show')).forEach(ul => {
-    ul.classList.remove('show')
-    ul.previousElementSibling.classList.remove('rotate')
-  })
-}
