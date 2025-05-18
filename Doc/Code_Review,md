@@ -14,7 +14,7 @@ Note: The database is not yet hooked up with anything on the website directly. I
 
 1. the side bar works
 2. there is a profile page
-3. cant login or create an account yet
+3. cant login or create an account yet (located in side bar when you click on profile)
 4. cant post or reply
 5. the search bar has doesnt search yet
 6. the html css and javascript is almost finished
