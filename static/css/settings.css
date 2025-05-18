@@ -1,21 +1,40 @@
 .settings-row {
+    margin-top: 10px;
     display: flex;
+}
+.settings-row > div > div {
+    height: 1.5rem;
+    align-items: center;
+    margin: 12px 0px;
 }
 
 .settings-name-col {
-    flex: 20%;
+    flex: 15%;
 }
 .settings-val-col {
-    flex: 80%;
+    flex: 85%;
 }
 
 .settings-button {
+    /* font-size: small; */
+    border: none;
     border-radius: 5px;
-    /* background-color: var(line-clr); */
-    border: 3px solid var(--line-clr);
-    padding: 5px;
+    background-color: var(--line-clr);
+    width: 8rem;
+    text-align: center;
+    margin: 8px 0px !important;
+    padding: 4px 0px !important;
 }
 
 .settings-button:hover {
-    background-color: var(hover-clr);
+    background-color: var(--hover-clr);
+}
+
+.settings-update-all {
+    height: auto !important;
+    padding: 1rem !important;
+    border: 5px solid var(--line-clr);
+    border-radius: 1rem;
+    font-size: 1.5rem;
+    width: auto !important;
 }
