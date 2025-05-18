@@ -13,8 +13,7 @@ def make_table(table_name, fields):
 def main():
     make_table('users', """
                userID INT AUTO_INCREMENT,
-               username VARCHAR(255),
-               password VARCHAR(255)
+               username VARCHAR(255)
                """)
     # make_table('posts', """
     #            postID INT AUTO_INCREMENT,
