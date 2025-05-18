@@ -1,0 +1,28 @@
+# Quaver
+A website discussion forum for music with account personalization.
+
+## By the End of the Term, you should be able to
+1. Create an account
+2. Navigate the website
+3. Personalize your profile
+4. Post on the forum
+5. Reply to a forum post
+6. Search the website for forum posts
+
+## Project Status
+Note: The database is not yet hooked up with anything on the website directly. It is purely being used for testing right now.
+
+1. the side bar works
+2. there is a profile page
+3. cant login or create an account yet
+4. cant post or reply
+5. the search bar has doesnt search yet
+6. the html css and javascript is almost finished
+    * working on hooking up the website to the database so these functionalities can work
+
+## How to Run
+1. Go to Running.md for instructions
+
+
+## Questions we like answered
+1. what do you think about the ui? what changes do you think would be helpful/more intuitve?
