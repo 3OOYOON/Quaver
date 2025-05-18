@@ -15,24 +15,24 @@ def main():
                userID INT AUTO_INCREMENT,
                username VARCHAR(255)
                """)
-    make_table('posts', """
-               postID INT AUTO_INCREMENT,
-               parentID INT,
-               posterID INT,
-               forumText VARCHAR(255)
-               """)
-    make_table('postsToTags', """
-               postID INT,
-               tag VARCHAR(255)
-               """)
-    make_table('postsLikes', """
-               postID INT,
-               likerID INT
-               """)
-    make_table('follows', """
-               followerID INT,
-               followedID INT
-               """)
+    # make_table('posts', """
+    #            postID INT AUTO_INCREMENT,
+    #            parentID INT,
+    #            posterID INT,
+    #            forumText VARCHAR(255)
+    #            """)
+    # make_table('postsToTags', """
+    #            postID INT,
+    #            tag VARCHAR(255)
+    #            """)
+    # make_table('postsLikes', """
+    #            postID INT,
+    #            likerID INT
+    #            """)
+    # make_table('follows', """
+    #            followerID INT,
+    #            followedID INT
+    #            """)
 
 if __name__=='__main__':
     main()
