@@ -13,13 +13,111 @@
   transition: background-color 0.2s;
   margin-left: 10px;
 }
-
 .new-post-btn:hover {
   background-color: var(--hover-clr);
 }
-
 .new-post-icon {
   width: 1.3em;
   height: 1.3em;
   vertical-align: middle;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal.hidden {
+  display: none;
+}
+.modal-content {
+  background: var(--base-clr);
+  color: var(--text-clr);
+  padding: 2em;
+  border-radius: 1em;
+  min-width: 300px;
+  max-width: 90vw;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+.close-btn {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  font-size: 2em;
+  cursor: pointer;
+  color: var(--secondary-text-clr);
+}
+
+/* Modal Form Fields - Applies to any form inside a modal */
+.modal-content input[type="text"],
+.modal-content textarea {
+  width: 100%;
+  padding: 0.7em;
+  border-radius: 0.5em;
+  border: 1px solid var(--line-clr);
+  background: var(--base-clr);
+  color: var(--text-clr);
+  margin-bottom: 1em;
+  font-size: 1rem;
+}
+.modal-content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+.modal-content input[type="file"] {
+  margin-bottom: 1em;
+  color: var(--text-clr);
+}
+
+/* Modal Submit Button */
+.modal-content .submit-btn {
+  background: var(--accent-clr);
+  color: var(--text-clr);
+  border: none;
+  padding: 0.7em 1.5em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+.modal-content .submit-btn:hover {
+  background: var(--hover-clr);
+}
+
+/* Chips (Tags) Styling for Modal */
+#new-post-chips.search-bar-chips,
+#reply-chips.search-bar-chips {
+  width: 100%;
+  box-sizing: border-box;
+}
+#new-post-chips .chip,
+#reply-chips .chip {
+  margin-bottom: 0.3em;
+}
+
+/* Post Tags Section (for displaying tags on posts) */
+.post-tags {
+  margin-bottom: 0.7em;
+  display: flex;
+  gap: 0.5em;
+  flex-wrap: wrap;
+}
+
+/* Responsive Modal */
+@media (max-width: 600px) {
+  .modal-content {
+    padding: 1em;
+    min-width: 0;
+    width: 95vw;
+  }
 }
