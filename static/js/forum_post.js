@@ -1,4 +1,4 @@
-function toggleReplies(button) {
+async function toggleReplies(button) {
   // Find the closest .forum-post ancestor
   const post = button.closest('.forum-post');
   // Find the .post-replies inside this post
@@ -10,6 +10,9 @@ function toggleReplies(button) {
   } else {
     replies.classList.add('hidden');
     button.querySelector('.btn-label').textContent = "Replies";
+    fetch('http://localhost:8000/api/data')
+        .then(res => res.json())
+        .then(data => console.log(data));
   }
 }
 
