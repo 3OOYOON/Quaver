@@ -15,20 +15,17 @@ async function toggleReplies(button) {
 
 async function loadPosts() {
     const res = await fetch("http://localhost:8000/posts", {method: "GET"})
-    const data = await res.json();
+    const allData = await res.json();
 
     const postTemplate = document.getElementById('post');
     const postContainer = document.querySelector('main');
 
-    data.forEach(postData => {
+    allData.forEach(postData => {
         console.log(postData)
-        const newPost = postTemplate.content.cloneNode(true);
-        // Fill the clone with actual data
-        // newPost.getElementsByClassName("post-title").textContent = newPost.
-        // newPost.querySelector('h3').textContent = profile.name;
-        // newPost.querySelector('p').textContent = profile.description;
-        // Append the clone to the container
-        postContainer.appendChild(newPost);
+        const postElement = postTemplate.content.cloneNode(true);
+        postElement.querySelector(".post-title").textContent = postData.title
+        postElement.querySelector(".post-text").textContent = postData.postText
+        postContainer.appendChild(postElement);
     });
 }
 
