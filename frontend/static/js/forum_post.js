@@ -10,23 +10,27 @@ async function toggleReplies(button) {
     } else {
         replies.classList.add('hidden');
         button.querySelector('.btn-label').textContent = "Replies";
-
-        fetch("http://localhost:8000", {
-            method: "POST",
-            body: JSON.stringify({'name': 'personnnn'}),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8"
-            }
-        })
-        .then(res => res.json())
-        .then(data => console.log(data));
-    //     fetch('http://localhost:8000/api/data/posts/123')
-    //         .then(res => res.json())
-    //         .then(data => console.log(data));
     }
 }
 
+async function loadPosts() {
+    const res = await fetch("http://localhost:8000/posts", {method: "GET"})
+    const data = await res.json();
 
+    const postTemplate = document.getElementById('post');
+    const postContainer = document.querySelector('main');
+
+    data.forEach(postData => {
+        console.log(postData)
+        const newPost = postTemplate.content.cloneNode(true);
+        // Fill the clone with actual data
+        // newPost.getElementsByClassName("post-title").textContent = newPost.
+        // newPost.querySelector('h3').textContent = profile.name;
+        // newPost.querySelector('p').textContent = profile.description;
+        // Append the clone to the container
+        postContainer.appendChild(newPost);
+    });
+}
 
 
 
@@ -107,9 +111,6 @@ document.getElementById('new-post-form').addEventListener('submit', function(e) 
     });
     postDiv.querySelector('.post-content').prepend(tagList);
   }
-
-
-
 
   insertPost(postDiv);
 

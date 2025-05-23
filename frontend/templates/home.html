@@ -12,7 +12,7 @@
   <script type="text/javascript" src="/static/js/forum_post.js" defer></script>
   <script type="text/javascript" src="/static/js/shared.js" defer></script>
 </head>
-<body>
+<body onload="loadPosts()">
   <nav id="sidebar">
     <ul>
       <li>
@@ -58,97 +58,52 @@
       <div class="chip-suggestions" id="chip-suggestions"></div>
     </div>
 
-    <!-- Forum post 1 -->
+    <template id="post">
     <div class="container forum-post">
-      <div class="post-header">
-        <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
-        <div class="user-info">
-          <strong>JaneDoe42</strong>
-          <span class="post-date">Posted on May 15, 2025</span>
+        <div class="post-header">
+            <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
+            <div class="user-info">
+                <strong class="post-username">JaneDoe42</strong>
+                <span class="post-date">Posted on May 15, 2025</span>
+            </div>
         </div>
-      </div>
-      <div class="post-content">
-        <h2>Hello World</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis porro iure quaerat aliquam!</p>
-        <img src="/static/images/profile_picture.jpg" class="avatar" alt="Profile Picture">
-      </div>
-      <!-- Post actions: reply and show replies -->
-      <div class="post-actions">
-        <button type="button" class="icon-btn reply-btn" onclick="openReplyModal(this)">
-          <img src="/static/icons/ic--baseline-chat-bubble.svg" alt="Reply" class="reply-icon">
-          <span class="btn-label">Reply</span>
-        </button>
-        <button type="button" class="icon-btn toggle-replies-btn" onclick="toggleReplies(this)">
-          <img src="/static/icons/ic--baseline-keyboard-return.svg" alt="Show Replies" class="show-reply">
-          <span class="btn-label">Show Replies</span>
-        </button>
-      </div>
-      <!-- Replies will go here if any -->
-      <div class="post-replies hidden">
-        <div class="reply">
-          <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
-          <div class="reply-content">
-            <strong>User123</strong>
-            <span class="post-date">Replied on May 15, 2025</span>
-            <p>Interesting take! I think...</p>
-          </div>
+        <div class="post-content">
+            <h2 class="post-title">Hello World</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis porro iure quaerat aliquam!</p>
+            <img src="/static/images/profile_picture.jpg" class="avatar" alt="Profile Picture">
         </div>
-        <div class="reply">
-          <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
-          <div class="reply-content">
-            <strong>CommentBot</strong>
-            <span class="post-date">Replied on May 15, 2025</span>
-            <p>I agree with your point. Here's what I found...</p>
-          </div>
+        <!-- Post actions: reply and show replies -->
+        <div class="post-actions">
+            <button type="button" class="icon-btn reply-btn" onclick="openReplyModal(this)">
+                <img src="/static/icons/ic--baseline-chat-bubble.svg" alt="Reply" class="reply-icon">
+                <span class="btn-label">Reply</span>
+            </button>
+            <button type="button" class="icon-btn toggle-replies-btn" onclick="toggleReplies(this)">
+                <img src="/static/icons/ic--baseline-keyboard-return.svg" alt="Show Replies" class="show-reply">
+                <span class="btn-label">Show Replies</span>
+            </button>
         </div>
-      </div>
+        <!-- Replies will go here if any -->
+        <div class="post-replies hidden">
+            <div class="reply">
+                <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
+                <div class="reply-content">
+                <strong>User123</strong>
+                <span class="post-date">Replied on May 15, 2025</span>
+                <p>Interesting take! I think...</p>
+                </div>
+            </div>
+            <div class="reply">
+                <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
+                <div class="reply-content">
+                <strong>CommentBot</strong>
+                <span class="post-date">Replied on May 15, 2025</span>
+                <p>I agree with your point. Here's what I found...</p>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- Forum post 2 -->
-    <div class="container forum-post">
-      <div class="post-header">
-        <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
-        <div class="user-info">
-          <strong>JaneDoe42</strong>
-          <span class="post-date">Posted on May 15, 2025</span>
-        </div>
-      </div>
-      <div class="post-content">
-        <h2>Hello World</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis porro iure quaerat aliquam!</p>
-      </div>
-
-      
-      <div class="post-actions">
-        <button type="button" class="icon-btn reply-btn" onclick="openReplyModal(this)">
-          <img src="/static/icons/ic--baseline-chat-bubble.svg" alt="Reply" class="reply-icon">
-          <span class="btn-label">Reply</span>
-        </button>
-        <button type="button" class="icon-btn toggle-replies-btn" onclick="toggleReplies(this)">
-          <img src="/static/icons/ic--baseline-keyboard-return.svg" alt="Show Replies" class="show-reply">
-          <span class="btn-label">Show Replies</span>
-        </button>
-      </div>
-      <div class="post-replies hidden">
-        <div class="reply">
-          <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
-          <div class="reply-content">
-            <strong>User123</strong>
-            <span class="post-date">Replied on May 15, 2025</span>
-            <p>Interesting take! I think...</p>
-          </div>
-        </div>
-        <div class="reply">
-          <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
-          <div class="reply-content">
-            <strong>CommentBot</strong>
-            <span class="post-date">Replied on May 15, 2025</span>
-            <p>I agree with your point. Here's what I found...</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
+    </template>
 
   <!-- New Post Modal -->
   <div id="new-post-modal" class="modal hidden">

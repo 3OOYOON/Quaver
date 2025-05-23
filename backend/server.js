@@ -21,6 +21,11 @@ app.post('/', (req, res)=>{
     res.send(JSON.stringify(`Welcome ${name}`));
 })
 
+app.get('/posts', async (req, res)=>{
+    const response = await connection.getPosts();
+    res.json(response);
+})
+
 app.listen(SERVER_PORT, (error) =>{
     if(!error)
         console.log("Server is successfully running, and is listening on port " + SERVER_PORT)

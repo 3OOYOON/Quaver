@@ -179,3 +179,12 @@ export async function connectToDB() {
         await conn.end();
     }
 }
+
+
+export async function getPosts() {
+    let conn = process.env.DATABASE_URL ? await connectWithURL() : await connectWithOptions();
+    const [rows] = await conn.query(
+        'SELECT * FROM posts;'
+    );
+    return rows;
+}
