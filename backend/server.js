@@ -3,9 +3,9 @@ const cors = require('cors');
 const connection = require('./connect-to-db')
 
 const app = express();
-const HOST_SITE = 'http://localhost'
-const FRONTEND_PORT = 3000
-const SERVER_PORT = 8000;
+const HOST_SITE = 'http://cs347.mathcs.carleton.edu'
+const FRONTEND_PORT = 5119
+const SERVER_PORT = 5219;
 
 
 app.use(cors({
@@ -28,7 +28,7 @@ app.get('/posts', async (req, res)=>{
 
 app.listen(SERVER_PORT, (error) =>{
     if(!error)
-        console.log("Server is successfully running, and is listening on port " + SERVER_PORT)
+        console.log(`Backend server running at ${HOST_SITE}:${SERVER_PORT}`)
     else 
         console.log("Error occurred, server can't start: ", error);
     }
