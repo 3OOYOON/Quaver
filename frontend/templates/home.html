@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/searchbar.css">
+  <link rel="stylesheet" href="/static/css/forum_posts.css">
+  <link rel="stylesheet" href="/static/css/new_post.css">
+  <script type="text/javascript" src="/static/js/sidebar.js" defer></script>
+  <script type="text/javascript" src="/static/js/forum_post.js" defer></script>
+  <script type="text/javascript" src="/static/js/shared.js" defer></script>
+</head>
+<body onload="loadPosts()">
+  <nav id="sidebar">
+    <ul>
+      <li>
+        <span class="logo">Quaver</span>
+        <button onclick="toggleSidebar()" id="toggle-btn">
+          <img src="/static/icons/ic--round-double-arrow.svg" alt="Home" style="width:25px; vertical-align:middle;">
+        </button>
+      </li>
+      <li class="active">
+        <a href="/templates/home.html">
+          <img src="/static/icons/ic--round-home.svg" alt="Home" style="width:25px; vertical-align:middle;">
+          <span>Home</span>
+        </a>
+      </li>
+      <li>
+        <a href="/templates/settings.html">
+          <img src="/static/icons/ic--round-settings.svg" alt="Settings" style="width:25px; vertical-align:middle;">
+          <span>Settings</span>
+        </a>
+      </li>
+      <li>
+        <a href="/templates/profile.html">
+          <img src="/static/icons/ic--round-person.svg" alt="Profile" style="width:25px; vertical-align:middle;">
+          <span>Profile</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <!-- Search bar -->
+    <div class="search-bar-container">
+      <div class="search-bar-wrapper">
+        <img src="/static/icons/ic--round-search.svg" class="search-icon" alt="Search">
+        <div class="search-bar-chips" id="search-bar-chips" tabindex="0">
+          <!-- Chips will be inserted here by JS -->
+          <input type="text" placeholder="Search..." class="search-bar-chip-input" id="search-bar-chip-input" autocomplete="off">
+        </div>
+      </div>
+      <button type="button" class="new-post-btn" id="open-modal-btn">
+        <img src="/static/icons/ic--baseline-create.svg" alt="New Post" class="new-post-icon">
+      </button>
+      <div class="chip-suggestions" id="chip-suggestions"></div>
+    </div>
+
+    <!-- Post Template -->
+    <template id="post">
+    <div class="container forum-post">
+        <div class="post-header">
+            <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
+            <div class="user-info">
+                <strong class="post-username">JaneDoe42</strong>
+                <span class="post-date">Posted on May 15, 2025</span>
+            </div>
+        </div>
+        <div class="post-content">
+            <h2 class="post-title">Hello World</h2>
+            <p class="post-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis porro iure quaerat aliquam!</p>
+            <img src="/static/images/profile_picture.jpg" class="avatar" alt="Profile Picture">
+        </div>
+        <!-- Post actions: reply and show replies -->
+        <div class="post-actions">
+            <button type="button" class="icon-btn reply-btn" onclick="openReplyModal(this)">
+                <img src="/static/icons/ic--baseline-chat-bubble.svg" alt="Reply" class="reply-icon">
+                <span class="btn-label">Reply</span>
+            </button>
+            <button type="button" class="icon-btn toggle-replies-btn" onclick="toggleReplies(this)">
+                <img src="/static/icons/ic--baseline-keyboard-return.svg" alt="Show Replies" class="show-reply">
+                <span class="btn-label">Show Replies</span>
+            </button>
+        </div>
+        <!-- Replies will go here if any -->
+        <div class="post-replies hidden">
+            <div class="reply">
+                <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
+                <div class="reply-content">
+                <strong>User123</strong>
+                <span class="post-date">Replied on May 15, 2025</span>
+                <p>Interesting take! I think...</p>
+                </div>
+            </div>
+            <div class="reply">
+                <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
+                <div class="reply-content">
+                <strong>CommentBot</strong>
+                <span class="post-date">Replied on May 15, 2025</span>
+                <p>I agree with your point. Here's what I found...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </template>
+
+  <!-- New Post Modal -->
+  <div id="new-post-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" id="close-modal-btn">&times;</span>
+      <h2>Create New Post</h2>
+      <form id="new-post-form">
+        <input type="text" id="post-title" placeholder="Title" required>
+        <textarea id="post-content" placeholder="What's on your mind?" required></textarea>
+        <label for="new-post-chip-input">Tags</label>
+        <small style="color: var(--secondary-text-clr);">Up to 5 tags. Example: Classical, Jazz, Pop</small>
+        <div class="chip-section">
+          <div id="new-post-chips" class="search-bar-chips" tabindex="0">
+            <input
+              id="new-post-chip-input"
+              class="search-bar-chip-input"
+              type="text"
+              placeholder="Add a tag..."
+              autocomplete="off"
+            />
+          </div>
+        </div>
+        <div id="new-post-chip-suggestions" class="chip-suggestions"></div>
+        <input type="file" id="post-images" accept="image/*" multiple>
+        <small style="color: var(--secondary-text-clr);">You can upload up to 10 images.</small>
+        <button type="submit" class="submit-btn">Post</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Reply Modal -->
+  <div id="reply-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" id="close-reply-modal-btn">&times;</span>
+      <h2>Write a Reply</h2>
+      <form id="reply-form">
+        <textarea id="reply-content" placeholder="Write your reply..." required></textarea>
+        <input type="file" id="reply-images" accept="image/*" multiple>
+        <small style="color: var(--secondary-text-clr);">You can upload up to 10 images.</small>
+        <button type="submit" class="submit-btn">Reply</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>
