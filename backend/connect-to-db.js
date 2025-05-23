@@ -70,30 +70,7 @@ async function getTiDBVersion(conn) {
 
 
 export async function getPosts() {
-    let conn = process.env.DATABASE_URL// ? await connectWithURL() : await connectWithOptions();
-    try {
-        const version = await getTiDBVersion(conn);
-
-        console.log('⏳  Loading sample game data...');
-        await loadSampleGameData(conn);
-        console.log('✅  Loaded sample game data.\n');
-
-        const newPlayer = await createPlayer(conn, 100, 100);
-        console.log(`🆕 Created a new player with ID ${newPlayer}.`);
-
-        const player = await getPlayerByID(conn, newPlayer);
-        console.log(`ℹ️ Got Player ${player.id}: Player { id: ${player.id}, coins: ${player.coins}, goods: ${player.goods} }`);
-
-        const updatedRows = await updatePlayer(conn, player.id, 50, 50);
-        console.log(`🔢 Added 50 coins and 50 goods to player ${player.id}, updated ${updatedRows} row.`);
-
-        const deletedRows = await deletePlayerByID(conn, player.id);
-        console.log(`🚮 Deleted ${deletedRows} player data.`);
-    } finally {
-        // Step 4. Close the connection.
-        await conn.end();
-    }
-
+    let conn = await process.env.DATABASE_URL ? await connectWithURL() : await connectWithOptions();
     const [rows] = await conn.query(
         'SELECT * FROM posts;'
     );

@@ -14,7 +14,7 @@ async function toggleReplies(button) {
 }
 
 async function loadPosts() {
-    const res = await fetch("http://cs347.mathcs.carleton.edu:5219/posts", {method: "GET"})
+    const res = await fetch("http://localhost:8000/posts", {method: "GET"})
     const allData = await res.json();
 
     const postTemplate = document.getElementById('post');

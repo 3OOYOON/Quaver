@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 5119;
+const FRONTEND_PORT = 3000;
 
 http.createServer((req, res) => {
     let filePath = './templates/home.html'; // Default file
@@ -50,6 +50,6 @@ http.createServer((req, res) => {
             res.end(content, 'utf-8');
         }
     });
-}).listen(PORT, () => {
-    console.log(`Frontend server running at http://cs347.mathcs.carleton.edu:${PORT}`);
+}).listen(FRONTEND_PORT, () => {
+    console.log(`Frontend server running at http://localhost:${FRONTEND_PORT}`);
 });

@@ -3,9 +3,9 @@ const cors = require('cors');
 const connection = require('./connect-to-db')
 
 const app = express();
-const HOST_SITE = 'http://cs347.mathcs.carleton.edu'
-const FRONTEND_PORT = 5119
-const SERVER_PORT = 5219;
+const HOST_SITE = 'http://localhost'
+const FRONTEND_PORT = 3000
+const SERVER_PORT = 8000;
 
 
 app.use(cors({
