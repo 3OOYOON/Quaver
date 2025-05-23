@@ -1,19 +1,29 @@
 async function toggleReplies(button) {
-  // Find the closest .forum-post ancestor
-  const post = button.closest('.forum-post');
-  // Find the .post-replies inside this post
-  const replies = post.querySelector('.post-replies');
-  if (!replies) return;
-  if (replies.classList.contains('hidden')) {
-    replies.classList.remove('hidden');
-    button.querySelector('.btn-label').textContent = "Hide Replies";
-  } else {
-    replies.classList.add('hidden');
-    button.querySelector('.btn-label').textContent = "Replies";
-    fetch('http://localhost:8000/api/data')
+    // Find the closest .forum-post ancestor
+    const post = button.closest('.forum-post');
+    // Find the .post-replies inside this post
+    const replies = post.querySelector('.post-replies');
+    if (!replies) return;
+    if (replies.classList.contains('hidden')) {
+        replies.classList.remove('hidden');
+        button.querySelector('.btn-label').textContent = "Hide Replies";
+    } else {
+        replies.classList.add('hidden');
+        button.querySelector('.btn-label').textContent = "Replies";
+
+        fetch("http://localhost:8000", {
+            method: "POST",
+            body: JSON.stringify({'name': 'personnnn'}),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
         .then(res => res.json())
         .then(data => console.log(data));
-  }
+    //     fetch('http://localhost:8000/api/data/posts/123')
+    //         .then(res => res.json())
+    //         .then(data => console.log(data));
+    }
 }
 
 

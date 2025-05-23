@@ -179,7 +179,3 @@ export async function connectToDB() {
         await conn.end();
     }
 }
-
-// void main();
-
-
