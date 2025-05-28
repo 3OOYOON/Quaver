@@ -41,11 +41,11 @@ async function connectWithURL() {
 async function connectWithOptions() {
     try {
         const options = {
-            host: process.env.TIDB_HOST || '127.0.0.1',
-            port: process.env.TIDB_PORT || 4000,
-            user: process.env.TIDB_USER || 'root',
-            password: process.env.TIDB_PASSWORD || '',
-            database: process.env.TIDB_DATABASE || 'test',
+            host: process.env.TIDB_HOST,
+            port: process.env.TIDB_PORT,
+            user: process.env.TIDB_USER,
+            password: process.env.TIDB_PASSWORD,
+            database: process.env.TIDB_DATABASE,
             ssl: process.env.TIDB_ENABLE_SSL === 'true' ? {
                 minVersion: 'TLSv1.2',
                 ca: process.env.TIDB_CA_PATH ? fs.readFileSync(process.env.TIDB_CA_PATH) : undefined
@@ -70,7 +70,7 @@ async function getTiDBVersion(conn) {
 
 
 export async function getPosts() {
-    let conn = await process.env.DATABASE_URL ? await connectWithURL() : await connectWithOptions();
+    let conn = await process.env.DATABASE_URL ? await connectWithURL(): await connectWithOptions();
     const [rows] = await conn.query(
         'SELECT * FROM posts;'
     );
