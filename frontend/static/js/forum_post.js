@@ -13,6 +13,25 @@ async function toggleReplies(button) {
     }
 }
 
+
+// Old LoadPosts function
+
+// async function loadPosts() {
+//     const res = await fetch("http://localhost:8000/posts", {method: "GET"})
+//     const allData = await res.json();
+
+//     const postTemplate = document.getElementById('post');
+//     const postContainer = document.querySelector('main');
+
+//     allData.forEach(postData => {
+//         console.log(postData)
+//         const postElement = postTemplate.content.cloneNode(true);
+//         postElement.querySelector(".post-title").textContent = postData.title
+//         postElement.querySelector(".post-text").textContent = postData.postText
+//         postContainer.appendChild(postElement);
+//     });
+// }
+
 async function loadPosts() {
     const res = await fetch("http://localhost:8000/posts", {method: "GET"})
     const allData = await res.json();
@@ -21,10 +40,21 @@ async function loadPosts() {
     const postContainer = document.querySelector('main');
 
     allData.forEach(postData => {
-        console.log(postData)
         const postElement = postTemplate.content.cloneNode(true);
         postElement.querySelector(".post-title").textContent = postData.title
         postElement.querySelector(".post-text").textContent = postData.postText
+
+        // Render tags
+        const tagsContainer = postElement.querySelector('.post-tags');
+        if (tagsContainer && Array.isArray(postData.tags)) {
+            postData.tags.forEach(tag => {
+                const tagEl = document.createElement('span');
+                tagEl.className = 'chip';
+                tagEl.textContent = tag;
+                tagsContainer.appendChild(tagEl);
+            });
+        }
+
         postContainer.appendChild(postElement);
     });
 }
@@ -96,7 +126,7 @@ document.getElementById('new-post-form').addEventListener('submit', function(e) 
   // Get selected tags
   const selectedTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
 
-  // ...after creating postDiv...
+  // After creating postDiv
   if (selectedTags.length > 0) {
     const tagList = document.createElement('div');
     tagList.className = 'post-tags';
@@ -117,13 +147,13 @@ document.getElementById('new-post-form').addEventListener('submit', function(e) 
 });
 
 
-// Helper: Insert post at top of main
+// Helper function to insert posts at top of main
 function insertPost(postDiv) {
   const main = document.querySelector('main');
   main.insertBefore(postDiv, main.children[main.children.length > 0 ? 1 : 0]);
 }
 
-// Helper: Escape HTML to prevent XSS
+// Helper function to escape HTML to prevent XSS
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, function(m) {
     return ({
