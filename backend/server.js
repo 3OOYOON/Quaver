@@ -26,6 +26,14 @@ app.get('/loadPosts', async (req, res)=>{
     res.json(response);
 })
 
+app.get('/dupCheck/:user/:email', async (req, res)=>{
+    //checks for duplicate usernames and emails in db
+    let user = req.params.user
+    let email = req.params.email
+    const response = await connection.checkDuplicates(user, email);
+    res.json(response);
+})
+
 app.listen(SERVER_PORT, (error) =>{
     if(!error)
         console.log(`Backend server running at ${HOST_SITE}:${SERVER_PORT}`)
