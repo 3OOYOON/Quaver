@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import * as fs from "fs";
 import { createConnection } from "mysql2/promise";
+import { arrayBuffer } from "stream/consumers";
 
 
 /**
@@ -75,4 +76,21 @@ export async function getPosts() {
         'SELECT * FROM posts;'
     );
     return rows;
+}
+
+export async function checkDuplicates(user, email){
+    let conn = await process.env.DATABASE_URL ? await connectWithURL(): await connectWithOptions();
+   
+    //list of username duplicates
+    const [users] = await conn.query(
+        'SELECT * FROM users WHERE username = ?', [user]
+    );
+    //list of email duplicates
+    const [emails] = await conn.query(
+        'SELECT * FROM users WHERE email = ?', [email]
+    );
+
+    //return length of each. both should be empty (false) with no duplicates
+    const dupCheck = [users.length, emails.length];
+    return dupCheck;
 }
