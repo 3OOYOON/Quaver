@@ -5,7 +5,7 @@ import { createConnection } from "mysql2/promise";
 
 dotenv.config();
 
-async function connectToDatabase() {
+async function connectToDB() {
     try {
         const options = {
             host: process.env.TIDB_HOST,
@@ -26,9 +26,9 @@ async function connectToDatabase() {
 
 
 export async function getPosts() {
-    let conn = await connectToDatabase();
+    let conn = await connectToDB();
     const [rows] = await conn.query(
-        'SELECT * FROM posts;'
+        'SELECT * FROM posts, postsToTags WHERE posts.postID = postToTags.postID;'
     );
     return rows;
 }

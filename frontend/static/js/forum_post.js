@@ -14,26 +14,8 @@ async function toggleReplies(button) {
 }
 
 
-// Old LoadPosts function
-
-// async function loadPosts() {
-//     const res = await fetch("http://localhost:8000/posts", {method: "GET"})
-//     const allData = await res.json();
-
-//     const postTemplate = document.getElementById('post');
-//     const postContainer = document.querySelector('main');
-
-//     allData.forEach(postData => {
-//         console.log(postData)
-//         const postElement = postTemplate.content.cloneNode(true);
-//         postElement.querySelector(".post-title").textContent = postData.title
-//         postElement.querySelector(".post-text").textContent = postData.postText
-//         postContainer.appendChild(postElement);
-//     });
-// }
-
 async function loadPosts() {
-    const res = await fetch("http://localhost:8000/posts", {method: "GET"})
+    const res = await fetch("http://localhost:8000/loadPosts", {method: "GET"});
     const allData = await res.json();
 
     const postTemplate = document.getElementById('post');

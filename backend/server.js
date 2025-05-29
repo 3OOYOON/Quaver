@@ -21,7 +21,7 @@ app.post('/', (req, res)=>{
     res.send(JSON.stringify(`Welcome ${name}`));
 })
 
-app.get('/posts', async (req, res)=>{
+app.get('/loadPosts', async (req, res)=>{
     const response = await connection.getPosts();
     res.json(response);
 })
