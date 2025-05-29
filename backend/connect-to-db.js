@@ -35,7 +35,7 @@ export async function getPosts() {
 }
 
 export async function checkDuplicates(user, email){
-    let conn = await process.env.DATABASE_URL ? await connectWithURL(): await connectWithOptions();
+    let conn = await connectToDB();
    
     //list of username duplicates
     const [users] = await conn.query(
