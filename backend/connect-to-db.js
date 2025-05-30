@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import * as fs from "fs";
 import { createConnection } from "mysql2/promise";
 import { arrayBuffer } from "stream/consumers";
+import { randomInt } from "crypto";
 
 
 dotenv.config();
@@ -49,4 +50,32 @@ export async function checkDuplicates(user, email){
     //return length of each. both should be empty (false) with no duplicates
     const dupCheck = [users.length, emails.length];
     return dupCheck;
+}
+
+export async function auth(email, pword){
+    let conn = await connectToDB();
+   
+    //pulls account based on email and tries to check pword entered
+    const [account] = await conn.query(
+        'SELECT pword FROM users WHERE email = ?', [email]
+    );
+
+    //if no account returned, can't check pword, both checks false
+    if (account.length != 1){
+        const negRes = [0, 0]
+        return negRes
+    } 
+
+    const res = [1, (account[0].pword == pword)]
+
+    return res;
+}
+
+export async function signUp(user, email, pword){
+    let conn = await connectToDB();
+    const [rows] = await conn.query(
+        'INSERT INTO users (userID, username, email, pword) VALUES (?, ?, ?, ?)', [randomInt(0, 10000000), user, email, pword]
+    );
+
+    return true;
 }

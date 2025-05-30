@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/static/css/profile.css">
   <link rel="stylesheet" href="/static/css/searchbar.css">
   <script type="text/javascript" src="/static/js/sidebar.js" defer></script>
-  <script type="text/javascript" src="/static/js/signup.js" defer></script>
+  <script type="text/javascript" src="/static/js/login.js" defer></script>
 </head>
 <body>
   <nav id="sidebar">
@@ -32,9 +32,9 @@
         </a>
       </li>
       <li>
-        <a href="/templates/logIn.html">
+        <a href="/templates/signUp.html">
           <img src="/static/icons/ic--round-person.svg" alt="Profile" style="width:25px; vertical-align:middle;">
-          <span>Log In</span>
+          <span>Sign Up</span>
         </a>
       </li>
     </ul>
@@ -51,20 +51,12 @@
     </div>
 
     <div class="search-bar-container">
-      <input type="text" placeholder="username" class="search-bar" id="username">
-    </div>
-
-    <div class="search-bar-container">
       <input type="password" placeholder="password" class="search-bar" id="pword">
     </div>
 
-    <div class="search-bar-container">
-      <input type="password" placeholder="confirm password" class="search-bar" id="cpword">
-    </div>
-
     <div>
-        <button class="signup-btn" onclick="signUp();"> 
-            <h3>Sign Up</h3>
+        <button class="signup-btn" onclick="logIn(email, pword);"> 
+            <h3>Log In</h3>
 
         </button>
         <h5 type="text" id="response"></h5>

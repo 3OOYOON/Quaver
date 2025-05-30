@@ -34,6 +34,22 @@ app.get('/dupCheck/:user/:email', async (req, res)=>{
     res.json(response);
 })
 
+app.get('/logIn/:email/:pword', async (req, res)=>{
+    //checks for duplicate usernames and emails in db
+    let pword = req.params.pword
+    let email = req.params.email
+    const response = await connection.auth(email, pword);
+    res.json(response);
+})
+
+app.post('/signUp/:user/:email/:pword', async (req, res)=>{
+    let user = req.params.user
+    let email = req.params.email
+    let pword = req.params.pword
+    const response = await connection.signUp(user,email,pword);
+    res.json(response)
+})
+
 app.listen(SERVER_PORT, (error) =>{
     if(!error)
         console.log(`Backend server running at ${HOST_SITE}:${SERVER_PORT}`)

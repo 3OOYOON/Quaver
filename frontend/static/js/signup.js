@@ -1,5 +1,3 @@
-
-
 async function signUp() {
     //get info from html
     var email = document.getElementById("email").value;
@@ -31,20 +29,26 @@ async function signUp() {
     const check = await res.json();
     
     //console.log(check);
-
-    if (check[0]) {
-        document.getElementById("response").innerHTML = "That username has been taken. Please enter a new username.";
-        return false;
-    } else if (check[1]) {
+    if (check[1]) {
         document.getElementById("response").innerHTML = "That email already has an account.";
+        return false;
+    } else if (check[0]) {
+        document.getElementById("response").innerHTML = "That username has been taken. Please enter a new username.";
         return false;
     }
 
 
-    //hash password
+    //should hash password
+
 
     //send everything to database
-    document.getElementById("response").innerHTML = "nice!";
-    return true;
+    const upload = await fetch("http://localhost:8000/signUp/" + username + "/" + email + "/" + pword, {method: "POST"});
+    const done = await upload.json();
+
+    if (done){
+        document.getElementById("response").innerHTML = "nice!";
+        return true;
+    }
+    return false
 }
 
