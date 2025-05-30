@@ -62,7 +62,6 @@ document.getElementById('new-post-form').addEventListener('submit', function(e) 
     e.preventDefault();
     const postTitle = document.getElementById('post-title').value.trim();
     const postContent = document.getElementById('post-content').value.trim();
-    // const currentDate = new Date()
     const postDate = Date.now()
     const imageInput = document.getElementById('post-images');
     const imageFiles = Array.from(imageInput.files);
@@ -72,10 +71,33 @@ document.getElementById('new-post-form').addEventListener('submit', function(e) 
         return;
     }
 
+    // // If images uploaded, append them
+    // if (imageFiles.length > 0) {
+    //     const imgContainer = postDiv.querySelector('.uploaded-images');
+    //     imageFiles.forEach(file => {
+    //     const reader = new FileReader();
+    //     reader.onload = function(e) {
+    //         const img = document.createElement('img');
+    //         img.src = e.target.result;
+    //         img.className = 'avatar';
+    //         img.alt = 'Uploaded Image';
+    //         img.style.margin = "5px";
+    //         imgContainer.appendChild(img);
+    //     };
+    //     reader.readAsDataURL(file);
+    //     });
+    // }
+
+
+    // Get selected tags
+    const newPostChipsContainer = document.getElementById('new-post-chips')
+    const postTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
+
     const postData = {
         title: postTitle,
         content: postContent,
-        datePosted: postDate
+        datePosted: postDate,
+        tags: postTags
     }
     insertPost(postData, first=true);
 
@@ -87,64 +109,9 @@ document.getElementById('new-post-form').addEventListener('submit', function(e) 
         },
         body: JSON.stringify(postData)});
 
-
-  // Create post container
-//   const postDiv = document.createElement('div');
-//   postDiv.className = 'container forum-post';
-//   postDiv.innerHTML = `
-//     <div class="post-header">
-//       <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
-//       <div class="user-info">
-//         <strong>You</strong>
-//         <span class="post-date">Posted just now</span>
-//       </div>
-//     </div>
-//     <div class="post-content">
-//       <h2>${escapeHtml(title)}</h2>
-//       <p>${escapeHtml(content)}</p>
-//       <div class="uploaded-images"></div>
-//     </div>
-//   `;
-
-//   // If images uploaded, append them
-//   if (imageFiles.length > 0) {
-//     const imgContainer = postDiv.querySelector('.uploaded-images');
-//     imageFiles.forEach(file => {
-//       const reader = new FileReader();
-//       reader.onload = function(e) {
-//         const img = document.createElement('img');
-//         img.src = e.target.result;
-//         img.className = 'avatar';
-//         img.alt = 'Uploaded Image';
-//         img.style.margin = "5px";
-//         imgContainer.appendChild(img);
-//       };
-//       reader.readAsDataURL(file);
-//     });
-//   }
-
-
-//   // Get selected tags
-//   const selectedTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
-
-//   // After creating postDiv
-//   if (selectedTags.length > 0) {
-//     const tagList = document.createElement('div');
-//     tagList.className = 'post-tags';
-//     selectedTags.forEach(tag => {
-//       const tagEl = document.createElement('span');
-//       tagEl.className = 'chip';
-//       tagEl.textContent = tag;
-//       tagList.appendChild(tagEl);
-//     });
-//     postDiv.querySelector('.post-content').prepend(tagList);
-//   }
-
-//   insertPost(postDiv);
-
-  // Close modal and reset form
-  document.getElementById('new-post-modal').classList.add('hidden');
-  this.reset();
+    // Close modal and reset form
+    document.getElementById('new-post-modal').classList.add('hidden');
+    this.reset();
 });
 
 

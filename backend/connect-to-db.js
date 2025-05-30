@@ -54,8 +54,23 @@ export async function checkDuplicates(user, email){
 
 export async function makePost(post_data) {
     let conn = await connectToDB();
-    conn.query(
-        'INSERT INTO posts (title, content, datePosted) VALUES (?, ?, ?);', 
-        [post_data['title'], post_data['content'], post_data['datePosted']]
-    );
+    const postsQuery = 'INSERT INTO posts (title, content, datePosted) VALUES (?, ?, ?);'
+    const postsToTagsQuery = 
+    conn.query(postsQuery, [post_data['title'], post_data['content'], post_data['datePosted']], (err, result) => {
+		if(err){
+			response.send('Error inserting data');
+			return;
+		}
+		const lastInsertedId = result.insertId;
+
+		postData.tags.forEach(tag => {
+            conn.query(`INSERT INTO postsToTags (postID, tag) VALUES (?, ?);`, [tag], (err, result) => {
+                if(err) {
+                    response.send('Error inserting data');
+                    return;
+                }
+            });
+        });
+    });
 }
+    
