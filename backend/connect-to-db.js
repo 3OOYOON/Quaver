@@ -29,7 +29,7 @@ async function connectToDB() {
 export async function getPosts() {
     let conn = await connectToDB();
     const [rows] = await conn.query(
-        'SELECT * FROM posts LIMIT 40;'
+        'SELECT * FROM posts ORDER BY postID DESC LIMIT 10;'
     );
     return rows;
 }
@@ -55,7 +55,7 @@ export async function checkDuplicates(user, email){
 export async function makePost(post_data) {
     let conn = await connectToDB();
     conn.query(
-        'INSERT INTO posts (title, content) VALUES (?, ?);', 
-        [post_data['title'], post_data['content']]
+        'INSERT INTO posts (title, content, datePosted) VALUES (?, ?, ?);', 
+        [post_data['title'], post_data['content'], post_data['datePosted']]
     );
 }

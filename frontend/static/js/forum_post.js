@@ -58,10 +58,12 @@ document.getElementById('new-post-modal').addEventListener('click', function(e) 
 });
 
 
-document.getElementById('new-post-form').addEventListener('submit', async function(e) {
+document.getElementById('new-post-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const postTitle = document.getElementById('post-title').value.trim();
     const postContent = document.getElementById('post-content').value.trim();
+    // const currentDate = new Date()
+    const postDate = Date.now()
     const imageInput = document.getElementById('post-images');
     const imageFiles = Array.from(imageInput.files);
 
@@ -72,18 +74,18 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
 
     const postData = {
         title: postTitle,
-        content: postContent
+        content: postContent,
+        datePosted: postDate
     }
+    insertPost(postData, first=true);
 
-    response = await fetch("http://localhost:8000/makePost", {
+    fetch("http://localhost:8000/makePost", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(postData)});
-
-    insertPost(postData, first=true);
 
 
   // Create post container
@@ -154,7 +156,10 @@ function insertPost(postData, first=false) {
 
     postElement.querySelector(".post-title").textContent = postData['title']
     postElement.querySelector(".post-text").textContent = postData['content']
-
+    postElement.querySelector(".post-date").textContent = ''
+    const date = new Date(postData['datePosted'])
+    postElement.querySelector(".post-date").textContent = 'Posted on '+ date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})
+    
     // Render tags
     // const tagsContainer = postElement.querySelector('.post-tags');
     // if (tagsContainer && Array.isArray(postData.tags)) {
