@@ -14,7 +14,7 @@ async function toggleReplies(button) {
 }
 
 
-async function loadPosts() {
+async function refreshPosts() {
     const res = await fetch("http://localhost:8000/loadPosts", {method: "GET"});
     const allData = await res.json();
 
@@ -22,22 +22,23 @@ async function loadPosts() {
     const postContainer = document.querySelector('main');
 
     allData.forEach(postData => {
-        const postElement = postTemplate.content.cloneNode(true);
-        postElement.querySelector(".post-title").textContent = postData.title
-        postElement.querySelector(".post-text").textContent = postData.postText
+        insertPost(postData);
+        // const postElement = postTemplate.content.cloneNode(true);
+        // postElement.querySelector(".post-title").textContent = postData['title']
+        // postElement.querySelector(".post-text").textContent = postData['content']
 
-        // Render tags
-        const tagsContainer = postElement.querySelector('.post-tags');
-        if (tagsContainer && Array.isArray(postData.tags)) {
-            postData.tags.forEach(tag => {
-                const tagEl = document.createElement('span');
-                tagEl.className = 'chip';
-                tagEl.textContent = tag;
-                tagsContainer.appendChild(tagEl);
-            });
-        }
+        // // Render tags
+        // const tagsContainer = postElement.querySelector('.post-tags');
+        // if (tagsContainer && Array.isArray(postData.tags)) {
+        //     postData.tags.forEach(tag => {
+        //         const tagEl = document.createElement('span');
+        //         tagEl.className = 'chip';
+        //         tagEl.textContent = tag;
+        //         tagsContainer.appendChild(tagEl);
+        //     });
+        // }
 
-        postContainer.appendChild(postElement);
+        // postContainer.appendChild(postElement);
     });
 }
 
@@ -57,71 +58,87 @@ document.getElementById('new-post-modal').addEventListener('click', function(e) 
 });
 
 
-document.getElementById('new-post-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const title = document.getElementById('post-title').value.trim();
-  const content = document.getElementById('post-content').value.trim();
-  const imageInput = document.getElementById('post-images');
-  const imageFiles = Array.from(imageInput.files);
+document.getElementById('new-post-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const postTitle = document.getElementById('post-title').value.trim();
+    const postContent = document.getElementById('post-content').value.trim();
+    const imageInput = document.getElementById('post-images');
+    const imageFiles = Array.from(imageInput.files);
 
-  if (imageFiles.length > 10) {
-    alert('You can upload a maximum of 10 images.');
-    return;
-  }
+    if (imageFiles.length > 10) {
+        alert('You can upload a maximum of 10 images.');
+        return;
+    }
+
+    const postData = {
+        title: postTitle,
+        content: postContent
+    }
+
+    response = await fetch("http://localhost:8000/makePost", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(postData)});
+
+    insertPost(postData, first=true);
+
 
   // Create post container
-  const postDiv = document.createElement('div');
-  postDiv.className = 'container forum-post';
-  postDiv.innerHTML = `
-    <div class="post-header">
-      <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
-      <div class="user-info">
-        <strong>You</strong>
-        <span class="post-date">Posted just now</span>
-      </div>
-    </div>
-    <div class="post-content">
-      <h2>${escapeHtml(title)}</h2>
-      <p>${escapeHtml(content)}</p>
-      <div class="uploaded-images"></div>
-    </div>
-  `;
+//   const postDiv = document.createElement('div');
+//   postDiv.className = 'container forum-post';
+//   postDiv.innerHTML = `
+//     <div class="post-header">
+//       <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
+//       <div class="user-info">
+//         <strong>You</strong>
+//         <span class="post-date">Posted just now</span>
+//       </div>
+//     </div>
+//     <div class="post-content">
+//       <h2>${escapeHtml(title)}</h2>
+//       <p>${escapeHtml(content)}</p>
+//       <div class="uploaded-images"></div>
+//     </div>
+//   `;
 
-  // If images uploaded, append them
-  if (imageFiles.length > 0) {
-    const imgContainer = postDiv.querySelector('.uploaded-images');
-    imageFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.className = 'avatar';
-        img.alt = 'Uploaded Image';
-        img.style.margin = "5px";
-        imgContainer.appendChild(img);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
+//   // If images uploaded, append them
+//   if (imageFiles.length > 0) {
+//     const imgContainer = postDiv.querySelector('.uploaded-images');
+//     imageFiles.forEach(file => {
+//       const reader = new FileReader();
+//       reader.onload = function(e) {
+//         const img = document.createElement('img');
+//         img.src = e.target.result;
+//         img.className = 'avatar';
+//         img.alt = 'Uploaded Image';
+//         img.style.margin = "5px";
+//         imgContainer.appendChild(img);
+//       };
+//       reader.readAsDataURL(file);
+//     });
+//   }
 
 
-  // Get selected tags
-  const selectedTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
+//   // Get selected tags
+//   const selectedTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
 
-  // After creating postDiv
-  if (selectedTags.length > 0) {
-    const tagList = document.createElement('div');
-    tagList.className = 'post-tags';
-    selectedTags.forEach(tag => {
-      const tagEl = document.createElement('span');
-      tagEl.className = 'chip';
-      tagEl.textContent = tag;
-      tagList.appendChild(tagEl);
-    });
-    postDiv.querySelector('.post-content').prepend(tagList);
-  }
+//   // After creating postDiv
+//   if (selectedTags.length > 0) {
+//     const tagList = document.createElement('div');
+//     tagList.className = 'post-tags';
+//     selectedTags.forEach(tag => {
+//       const tagEl = document.createElement('span');
+//       tagEl.className = 'chip';
+//       tagEl.textContent = tag;
+//       tagList.appendChild(tagEl);
+//     });
+//     postDiv.querySelector('.post-content').prepend(tagList);
+//   }
 
-  insertPost(postDiv);
+//   insertPost(postDiv);
 
   // Close modal and reset form
   document.getElementById('new-post-modal').classList.add('hidden');
@@ -130,9 +147,30 @@ document.getElementById('new-post-form').addEventListener('submit', function(e) 
 
 
 // Helper function to insert posts at top of main
-function insertPost(postDiv) {
-  const main = document.querySelector('main');
-  main.insertBefore(postDiv, main.children[main.children.length > 0 ? 1 : 0]);
+function insertPost(postData, first=false) {
+    const postTemplate = document.getElementById('post');
+    const postContainer = document.querySelector('main');
+    const postElement = postTemplate.content.cloneNode(true);
+
+    postElement.querySelector(".post-title").textContent = postData['title']
+    postElement.querySelector(".post-text").textContent = postData['content']
+
+    // Render tags
+    // const tagsContainer = postElement.querySelector('.post-tags');
+    // if (tagsContainer && Array.isArray(postData.tags)) {
+    //     postData.tags.forEach(tag => {
+    //         const tagEl = document.createElement('span');
+    //         tagEl.className = 'chip';
+    //         tagEl.textContent = tag;
+    //         tagsContainer.appendChild(tagEl);
+    //     });
+    // }
+    if ((!first) || postContainer.children.length < 2) {
+        postContainer.appendChild(postElement);
+    }
+    else {
+        postContainer.insertBefore(postElement, postContainer.children[1]);
+    }
 }
 
 // Helper function to escape HTML to prevent XSS
