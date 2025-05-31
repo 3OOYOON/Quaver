@@ -129,14 +129,13 @@ function insertPost(postData, first=false) {
     
     // Render tags
     // const tagsContainer = postElement.querySelector('.post-tags');
-    // if (tagsContainer && Array.isArray(postData.tags)) {
-    //     postData.tags.forEach(tag => {
-    //         const tagEl = document.createElement('span');
-    //         tagEl.className = 'chip';
-    //         tagEl.textContent = tag;
-    //         tagsContainer.appendChild(tagEl);
-    //     });
-    // }
+    // postData.tags.forEach(tag => {
+    //     const tagEl = document.createElement('span');
+    //     tagEl.className = 'chip';
+    //     tagEl.textContent = tag;
+    //     tagsContainer.appendChild(tagEl);
+    // });
+
     if ((!first) || postContainer.children.length < 2) {
         postContainer.appendChild(postElement);
     }

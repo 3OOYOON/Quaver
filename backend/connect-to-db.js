@@ -29,8 +29,11 @@ async function connectToDB() {
 export async function getPosts() {
     let conn = await connectToDB();
     const [rows] = await conn.query(
-        'SELECT * FROM posts ORDER BY postID DESC LIMIT 10;'
+        'SELECT * FROM posts ORDER BY datePosted DESC LIMIT 10;'
     );
+    for (let i = 0; i<rows.length; i++) {
+        
+    }
     return rows;
 }
 
@@ -64,7 +67,7 @@ export async function makePost(post_data) {
 		const lastInsertedId = result.insertId;
 
 		postData.tags.forEach(tag => {
-            conn.query(`INSERT INTO postsToTags (postID, tag) VALUES (?, ?);`, [tag], (err, result) => {
+            conn.query(`INSERT INTO postsToTags (postID, tag) VALUES (?, ?);`, [lastInsertedId, tag], (err, result) => {
                 if(err) {
                     response.send('Error inserting data');
                     return;
