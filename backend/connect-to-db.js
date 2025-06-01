@@ -30,9 +30,21 @@ async function connectToDB() {
 
 export async function getPosts() {
     let conn = await connectToDB();
-    const [rows] = await conn.query(
-        'SELECT * FROM posts, postsToTags WHERE posts.postID = postToTags.postID;'
+    let [rows] = await conn.query(`
+        SELECT posts.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags
+        FROM posts
+        LEFT JOIN postsToTags ON posts.postID = postsToTags.postID
+        GROUP BY posts.postID
+        ORDER BY datePosted DESC LIMIT 10;`
     );
+    for (let i=0; i<rows.length; i++) {
+        if (rows[i].tags) {
+            rows[i].tags = rows[i].tags.split(",");
+        }
+        else {
+            rows[i].tags = []
+        }
+    }
     return rows;
 }
 
@@ -52,6 +64,25 @@ export async function checkDuplicates(user, email){
     const dupCheck = [users.length, emails.length];
     return dupCheck;
 }
+
+
+export async function makePost(postData) {
+    let conn = await connectToDB();
+
+    const [result] = await conn.query(
+        `INSERT INTO posts (title, content, datePosted) VALUES (?, ?, ?);`, 
+        [postData['title'], postData['content'], postData['datePosted']]
+    )
+    const lastInsertedId = result.insertId;
+
+    postData.tags.forEach(tag => {
+        conn.query(
+            `INSERT INTO postsToTags (postID, tag) VALUES (?, ?);`, 
+            [lastInsertedId, tag]
+        )
+    });
+}
+    
 
 export async function auth(email, pword){
     let conn = await connectToDB();

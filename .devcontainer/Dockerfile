@@ -14,6 +14,7 @@ RUN apt-get update && apt-get upgrade -y && \
     npm
 
 RUN npm install express
+RUN npm install body-parser
 RUN npm install mysql2
 RUN npm install google-auth-library --save
 RUN npm install bcrypt
