@@ -1,28 +1,41 @@
 const express = require('express');
+const bodyParser = require('body-parser')
 const cors = require('cors');
 const connection = require('./connect-to-db')
 
-const app = express();
 const HOST_SITE = 'http://localhost'
 const FRONTEND_PORT = 3000
 const SERVER_PORT = 8000;
 
+const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors({
     origin: `${HOST_SITE}:${FRONTEND_PORT}`,
     methods: ['GET', 'POST'],
     credentials: true
 }));
-app.use(express.json());
 
-app.post('/', (req, res)=>{
-    const {name} = req.body;
-    connection.connectToDB();
-    res.send(JSON.stringify(`Welcome ${name}`));
+
+app.post('/makePost', async (req, res)=>{
+    const post_data = req.body;
+    const response = await connection.makePost(post_data);
+    res.send("Added post.")
 })
 
-app.get('/posts', async (req, res)=>{
+app.get('/loadPosts', async (req, res)=>{
     const response = await connection.getPosts();
+    res.json(response);
+})
+
+app.get('/dupCheck/:user/:email', async (req, res)=>{
+    //checks for duplicate usernames and emails in db
+    let user = req.params.user
+    let email = req.params.email
+    const response = await connection.checkDuplicates(user, email);
     res.json(response);
 })
 
