@@ -18,27 +18,8 @@ async function refreshPosts() {
     const res = await fetch("http://localhost:8000/loadPosts", {method: "GET"});
     const allData = await res.json();
 
-    const postTemplate = document.getElementById('post');
-    const postContainer = document.querySelector('main');
-
     allData.forEach(postData => {
         insertPost(postData);
-        // const postElement = postTemplate.content.cloneNode(true);
-        // postElement.querySelector(".post-title").textContent = postData['title']
-        // postElement.querySelector(".post-text").textContent = postData['content']
-
-        // // Render tags
-        // const tagsContainer = postElement.querySelector('.post-tags');
-        // if (tagsContainer && Array.isArray(postData.tags)) {
-        //     postData.tags.forEach(tag => {
-        //         const tagEl = document.createElement('span');
-        //         tagEl.className = 'chip';
-        //         tagEl.textContent = tag;
-        //         tagsContainer.appendChild(tagEl);
-        //     });
-        // }
-
-        // postContainer.appendChild(postElement);
     });
 }
 
@@ -121,6 +102,7 @@ function insertPost(postData, first=false) {
     const postContainer = document.querySelector('main');
     const postElement = postTemplate.content.cloneNode(true);
 
+    // Set title, content, date, etc.
     postElement.querySelector(".post-title").textContent = postData['title']
     postElement.querySelector(".post-text").textContent = postData['content']
     postElement.querySelector(".post-date").textContent = ''
@@ -128,13 +110,13 @@ function insertPost(postData, first=false) {
     postElement.querySelector(".post-date").textContent = 'Posted on '+ date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})
     
     // Render tags
-    // const tagsContainer = postElement.querySelector('.post-tags');
-    // postData.tags.forEach(tag => {
-    //     const tagEl = document.createElement('span');
-    //     tagEl.className = 'chip';
-    //     tagEl.textContent = tag;
-    //     tagsContainer.appendChild(tagEl);
-    // });
+    const tagsContainer = postElement.querySelector('.post-tags');
+    postData.tags.forEach(tag => {
+        const tagEl = document.createElement('span');
+        tagEl.className = 'chip';
+        tagEl.textContent = tag;
+        tagsContainer.appendChild(tagEl);
+    });
 
     if ((!first) || postContainer.children.length < 2) {
         postContainer.appendChild(postElement);

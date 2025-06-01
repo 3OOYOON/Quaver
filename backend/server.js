@@ -21,8 +21,8 @@ app.use(cors({
 
 
 app.post('/makePost', async (req, res)=>{
-    const post_data = req.body;
-    const response = await connection.makePost(post_data);
+    const postData = req.body;
+    const response = await connection.makePost(postData);
     res.send("Added post.")
 })
 

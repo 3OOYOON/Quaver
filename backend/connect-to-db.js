@@ -28,11 +28,20 @@ async function connectToDB() {
 
 export async function getPosts() {
     let conn = await connectToDB();
-    const [rows] = await conn.query(
-        'SELECT * FROM posts ORDER BY datePosted DESC LIMIT 10;'
+    let [rows] = await conn.query(`
+        SELECT posts.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags
+        FROM posts
+        LEFT JOIN postsToTags ON posts.postID = postsToTags.postID
+        GROUP BY posts.postID
+        ORDER BY datePosted DESC LIMIT 10;`
     );
-    for (let i = 0; i<rows.length; i++) {
-        
+    for (let i=0; i<rows.length; i++) {
+        if (rows[i].tags) {
+            rows[i].tags = rows[i].tags.split(",");
+        }
+        else {
+            rows[i].tags = []
+        }
     }
     return rows;
 }
@@ -55,25 +64,20 @@ export async function checkDuplicates(user, email){
 }
 
 
-export async function makePost(post_data) {
+export async function makePost(postData) {
     let conn = await connectToDB();
-    const postsQuery = 'INSERT INTO posts (title, content, datePosted) VALUES (?, ?, ?);'
-    const postsToTagsQuery = 
-    conn.query(postsQuery, [post_data['title'], post_data['content'], post_data['datePosted']], (err, result) => {
-		if(err){
-			response.send('Error inserting data');
-			return;
-		}
-		const lastInsertedId = result.insertId;
 
-		postData.tags.forEach(tag => {
-            conn.query(`INSERT INTO postsToTags (postID, tag) VALUES (?, ?);`, [lastInsertedId, tag], (err, result) => {
-                if(err) {
-                    response.send('Error inserting data');
-                    return;
-                }
-            });
-        });
+    const [result] = await conn.query(
+        `INSERT INTO posts (title, content, datePosted) VALUES (?, ?, ?);`, 
+        [postData['title'], postData['content'], postData['datePosted']]
+    )
+    const lastInsertedId = result.insertId;
+
+    postData.tags.forEach(tag => {
+        conn.query(
+            `INSERT INTO postsToTags (postID, tag) VALUES (?, ?);`, 
+            [lastInsertedId, tag]
+        )
     });
 }
     
