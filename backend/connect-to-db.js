@@ -3,6 +3,7 @@ import * as fs from "fs";
 import { createConnection } from "mysql2/promise";
 import { arrayBuffer } from "stream/consumers";
 import { randomInt } from "crypto";
+const bcrypt = require('bcrypt');
 
 
 dotenv.config();
@@ -74,7 +75,7 @@ export async function auth(email, pword){
 export async function signUp(user, email, pword){
     let conn = await connectToDB();
     const [rows] = await conn.query(
-        'INSERT INTO users (userID, username, email, pword) VALUES (?, ?, ?, ?)', [randomInt(0, 10000000), user, email, pword]
+        'INSERT INTO users (username, email, pword) VALUES (?, ?, ?)', [user, email, pword]
     );
 
     return true;

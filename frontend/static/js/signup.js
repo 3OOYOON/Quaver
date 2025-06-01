@@ -1,3 +1,7 @@
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+
 async function signUp() {
     //get info from html
     var email = document.getElementById("email").value;
@@ -28,7 +32,6 @@ async function signUp() {
     const res = await fetch("http://localhost:8000/dupCheck/" + username + "/" + email, {method: "GET"});
     const check = await res.json();
     
-    //console.log(check);
     if (check[1]) {
         document.getElementById("response").innerHTML = "That email already has an account.";
         return false;
@@ -39,6 +42,7 @@ async function signUp() {
 
 
     //should hash password
+    
 
 
     //send everything to database
