@@ -126,6 +126,11 @@ function insertPost(postData, first=false) {
     }
 }
 
+// Helper function to insert posts at top of main
+function insertReply(replyData, first=false) {
+    
+}
+
 // Helper function to escape HTML to prevent XSS
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, function(m) {
