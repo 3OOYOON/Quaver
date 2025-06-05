@@ -3,7 +3,7 @@ import * as fs from "fs";
 import { createConnection } from "mysql2/promise";
 import { arrayBuffer } from "stream/consumers";
 import { randomInt } from "crypto";
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 
 
 dotenv.config();

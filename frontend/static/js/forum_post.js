@@ -34,9 +34,9 @@ document.getElementById('close-modal-btn').addEventListener('click', function() 
 });
 
 // Close modal when clicking outside the modal content
-document.getElementById('new-post-modal').addEventListener('click', function(e) {
-  if (e.target === this) this.classList.add('hidden');
-});
+// document.getElementById('new-post-modal').addEventListener('click', function(e) {
+//   if (e.target === this) this.classList.add('hidden');
+// });
 
 
 document.getElementById('new-post-form').addEventListener('submit', function(e) {

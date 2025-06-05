@@ -1,6 +1,6 @@
 const availableTags = ["Classical", "Jazz", "Electronic", "New-age", "Funk", "R&B", "Punk", 
                        "Acoustic", "Country", "Rock", "Reggae", "Pop", "Hip Hop", "Blues", 
-                       "Folk", "Christian", "Rap"];
+                       "Folk", "Christian", "Rap", "J-Pop", "K-Pop"];
 
 // For search bar
 initChipInput({
