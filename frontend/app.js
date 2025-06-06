@@ -49,6 +49,6 @@ http.createServer((req, res) => {
             res.end(content, 'utf-8');
         }
     });
-}).listen(5119, () => {
-    console.log(`Frontend server running at http://localhost:5119`);
+}).listen(3000, () => {
+    console.log(`Frontend server running at http://localhost:3000`);
 });

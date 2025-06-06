@@ -8,7 +8,7 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors({
-    origin: `http://localhost:5120`,
+    origin: `http://localhost:3000`,
     methods: ['GET', 'POST'],
     credentials: true
 }))
@@ -55,9 +55,9 @@ app.post('/signUp/:user/:email/:pword', async (req, res)=>{
     res.json(response)
 })
 
-app.listen(5219, (error) =>{
+app.listen(8000, (error) =>{
     if(!error)
-        console.log(`Backend server running at http://localhost:5219`)
+        console.log(`Backend server running at http://localhost:8000`)
     else 
         console.log("Error occurred, server can't start: ", error);
     }
