@@ -58,25 +58,6 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
         return;
     }
 
-    // Close modal and reset form
-
-    // // If images uploaded, append them
-    // if (imageFiles.length > 0) {
-    //     const imgContainer = postDiv.querySelector('.uploaded-images');
-    //     imageFiles.forEach(file => {
-    //     const reader = new FileReader();
-    //     reader.onload = function(e) {
-    //         const img = document.createElement('img');
-    //         img.src = e.target.result;
-    //         img.className = 'avatar';
-    //         img.alt = 'Uploaded Image';
-    //         img.style.margin = "5px";
-    //         imgContainer.appendChild(img);
-    //     };
-    //     reader.readAsDataURL(file);
-    //     });
-    // }
-
 
     // Get selected tags
     const newPostChipsContainer = document.getElementById('new-post-chips')
@@ -88,9 +69,9 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
     let postData = {
         title: postTitle,
         content: postContent,
-        tags: postTags
+        tags: postTags,
+        imageFiles: imageFiles
     }
-    console.log(postData)
     addPostOrReply(postData, insertPost);
 });
 
@@ -100,12 +81,12 @@ function insertPost(postData, first=false) {
     const postTemplate = document.getElementById('post');
     const postElement = document.importNode(postTemplate.content.firstElementChild, true);
     postElement.dataset.id = postData['postID'];
+    const date = new Date(postData['datePosted'])
 
     // Set title, content, date, etc.
     postElement.querySelector(".post-title").textContent = postData['title']
     postElement.querySelector(".post-text").textContent = postData['content']
     postElement.querySelector(".post-date").textContent = ''
-    const date = new Date(postData['datePosted'])
     postElement.querySelector(".post-date").textContent = 'Posted on '+ date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})
     
     // Render tags
@@ -116,7 +97,27 @@ function insertPost(postData, first=false) {
         tagEl.textContent = tag;
         tagsContainer.appendChild(tagEl);
     });
+    
+    // If images uploaded, append them
+    const imgContainer = postElement.querySelector('#post-image-container');
+    console.log(postData);
+    if (postData["imageFiles"]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.className = 'avatar';
+            img.alt = 'Uploaded Image';
+            img.style.margin = "5px";
+            imgContainer.appendChild(img);
+        };
+        postData["imageFiles"].forEach(file => {
+            reader.readAsDataURL(file);
+        });
+    }
 
+    // 
+    
     const postContainer = document.querySelector('main');
     if ((!first) || postContainer.children.length < 2) {
         postContainer.appendChild(postElement);
@@ -167,17 +168,6 @@ function insertReply(replyData, first=false) {
     }
 }
 
-// Helper function to escape HTML to prevent XSS
-function escapeHtml(str) {
-  return str.replace(/[&<>"']/g, function(m) {
-    return ({
-      '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'
-    })[m];
-  });
-}
-
-
-
 
 // This takes alot from how new posts works
 
@@ -224,8 +214,7 @@ document.getElementById('reply-form').addEventListener('submit', async function(
 });
 
 async function addPostOrReply(elementData, insertElement) {
-    console.log(elementData)
-    const res = await fetch(`http://localhost:5219/makePost`, {
+    const res = await fetch(`http://localhost:8000/makePost`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -239,7 +228,8 @@ async function addPostOrReply(elementData, insertElement) {
     insertElement(elementData, first=true);
 }
 
-// Helper: Escape HTML to prevent XSS
+
+// Helper function to escape HTML to prevent XSS
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, function(m) {
     return ({
