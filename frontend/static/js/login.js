@@ -13,7 +13,7 @@ async function logIn() {
       return false;
   }
 
-  const res = await fetch("http://localhost:8000/logIn/" + email + "/" + pword, {method: "GET"});
+  const res = await fetch(`http://localhost:5219/logIn/${email}/${pword}`, {method: "GET"});
   const check = await res.json();
   
   console.log(check);

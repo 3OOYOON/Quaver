@@ -12,7 +12,7 @@ async function toggleReplies(button) {
 
     if (repliesContainer.children.length <= 1) {
         // Find the .post-replies inside this post
-        const res = await fetch(`http://localhost:8000/loadReplies/${post.dataset.id}`, {method: "GET"});
+        const res = await fetch(`http://localhost:5219/loadReplies/${post.dataset.id}`, {method: "GET"});
         const replies = await res.json()
         replies.forEach(replyData => {
             insertReply(replyData)
@@ -22,7 +22,7 @@ async function toggleReplies(button) {
 
 
 async function refreshPosts() {
-    const res = await fetch("http://localhost:8000/loadPosts", {method: "GET"});
+    const res = await fetch(`http://localhost:5219/loadPosts`, {method: "GET"});
     const allData = await res.json();
 
     allData.forEach(postData => {
@@ -225,7 +225,7 @@ document.getElementById('reply-form').addEventListener('submit', async function(
 
 async function addPostOrReply(elementData, insertElement) {
     console.log(elementData)
-    const res = await fetch("http://localhost:8000/makePost", {
+    const res = await fetch(`http://localhost:5219/makePost`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',

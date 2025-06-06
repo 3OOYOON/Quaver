@@ -29,7 +29,7 @@ async function signUp() {
     }
 
     //check duplicates in db
-    const res = await fetch("http://localhost:8000/dupCheck/" + username + "/" + email, {method: "GET"});
+    const res = await fetch(`http://localhost:5219/dupCheck/${username}/${email}`, {method: "GET"});
     const check = await res.json();
     
     if (check[1]) {
@@ -46,7 +46,7 @@ async function signUp() {
 
 
     //send everything to database
-    const upload = await fetch("http://localhost:8000/signUp/" + username + "/" + email + "/" + pword, {method: "POST"});
+    const upload = await fetch(`http://localhost:5219/signUp/${username}/${email}/${pword}`, {method: "POST"});
     const done = await upload.json();
 
     if (done){

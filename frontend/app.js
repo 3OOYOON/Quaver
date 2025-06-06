@@ -2,7 +2,6 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const FRONTEND_PORT = 3000;
 
 http.createServer((req, res) => {
     let filePath = './templates/home.html'; // Default file
@@ -50,6 +49,6 @@ http.createServer((req, res) => {
             res.end(content, 'utf-8');
         }
     });
-}).listen(FRONTEND_PORT, () => {
-    console.log(`Frontend server running at http://localhost:${FRONTEND_PORT}`);
+}).listen(5119, () => {
+    console.log(`Frontend server running at http://localhost:5119`);
 });

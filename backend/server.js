@@ -1,23 +1,17 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 const cors = require('cors');
 const connection = require('./utils')
 
-const HOST_SITE = 'http://localhost'
-const FRONTEND_PORT = 3000
-const SERVER_PORT = 8000;
-
 const app = express();
 
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(cors({
-    origin: `${HOST_SITE}:${FRONTEND_PORT}`,
+    origin: `http://localhost:5120`,
     methods: ['GET', 'POST'],
     credentials: true
-}));
+}))
 
 
 app.post('/makePost', async (req, res)=>{
@@ -61,9 +55,9 @@ app.post('/signUp/:user/:email/:pword', async (req, res)=>{
     res.json(response)
 })
 
-app.listen(SERVER_PORT, (error) =>{
+app.listen(5219, (error) =>{
     if(!error)
-        console.log(`Backend server running at ${HOST_SITE}:${SERVER_PORT}`)
+        console.log(`Backend server running at http://localhost:5219`)
     else 
         console.log("Error occurred, server can't start: ", error);
     }
