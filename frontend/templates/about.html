@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Settings</title>
   <link rel="stylesheet" href="/static/css/style.css">
-  <link rel="stylesheet" href="/static/css/profile.css">
-  <link rel="stylesheet" href="/static/css/searchbar.css">
+  <link rel="stylesheet" href="/static/css/settings.css">
   <script type="text/javascript" src="/static/js/sidebar.js" defer></script>
-  <script type="text/javascript" src="/static/js/login.js" defer></script>
 </head>
 <body>
   <nav id="sidebar">
@@ -25,19 +23,19 @@
           <span>Home</span>
         </a>
       </li>
-      <li class="active">
+      <li>
         <a href="/templates/settings.html">
           <img src="/static/icons/ic--round-settings.svg" alt="Home" style="width:25px; vertical-align:middle;">
           <span>Settings</span>
         </a>
       </li>
       <li>
-        <a href="/templates/signUp.html">
-          <img src="/static/icons/ic--round-person.svg" alt="Profile" style="width:25px; vertical-align:middle;">
-          <span>Sign Up</span>
+        <a href="/templates/profile.html">
+          <img src="/static/icons/ic--round-person.svg" alt="Home" style="width:25px; vertical-align:middle;">
+          <span>Profile</span>
         </a>
       </li>
-      <li>
+      <li class="active">
         <a href="/templates/about.html">
           <img src="/static/icons/ic--round-question-mark.svg" alt="About" style="width:25px; vertical-align:middle;">
           <span>About</span>
@@ -46,28 +44,37 @@
     </ul>
   </nav>
   <main>
-
-    <div class="heading">
-      <h2>Create a New Account</h2>
-      <p>Enter your information below to sign up!</p>
-    </div>
-    
-    <div class="search-bar-container">
-      <input type="text" placeholder="email" class="search-bar" id="email">
-    </div>
-
-    <div class="search-bar-container">
-      <input type="password" placeholder="password" class="search-bar" id="pword">
+    <div class="container">
+        <h2>Basic Information</h2>
+        <p></p>
+        <p>
+            This webite is a webforum for posting about music. You dont need to create an account to browse the website, 
+            but if you want to post and reply to other people, an account is needed.
+        </p>
     </div>
 
-    <div>
-        <button class="signup-btn" onclick="logIn(email, pword);"> 
-            <h3>Log In</h3>
+    <div class="container">
+        <h2>What Can You Do?</h2>
+        <p></p>
 
-        </button>
-        <h5 type="text" id="response"></h5>
+        <h3>With an Account:</h3>
+        <ul>
+            <li>Brouse the forum</li>
+            <li>Use the search bar to brouse specific music generes</li>
+            <li>Create a post</li>
+            <li>Reply to a post</li>
+            <li>Personalize Profile</li>
+        </ul>
+
+        <p></p>
+
+        <h3>Without an Account</h3>
+        <ul>
+            <li>Brouse the forum</li>
+            <li>Use the search bar to brouse specific music generes</li>
+        </ul>
     </div>
 
-  </main>
+</main>
 </body>
 </html>
