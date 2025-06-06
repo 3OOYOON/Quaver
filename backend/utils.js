@@ -1,40 +1,31 @@
 import dotenv from "dotenv";
 import * as fs from "fs";
-import { createConnection } from "mysql2/promise";
 import { arrayBuffer } from "stream/consumers";
-// import { randomInt } from "crypto";
-// const bcrypt = require('bcrypt');
-
+import * as mysql from "mysql2/promise"
 
 dotenv.config();
 
-async function connectToDB() {
-    try {
-        const options = {
-            host: process.env.TIDB_HOST,
-            port: process.env.TIDB_PORT,
-            user: process.env.TIDB_USER,
-            password: process.env.TIDB_PASSWORD,
-            database: process.env.TIDB_DATABASE,
-            ssl: process.env.TIDB_ENABLE_SSL === 'true' ? {
+const pool = mysql.createPool({
+    host: process.env.TIDB_HOST,
+    port: process.env.TIDB_PORT,
+    user: process.env.TIDB_USER,
+    password: process.env.TIDB_PASSWORD,
+    database: process.env.TIDB_DATABASE,
+    ssl: process.env.TIDB_ENABLE_SSL === 'true' ? {
                 minVersion: 'TLSv1.2',
                 ca: process.env.TIDB_CA_PATH ? fs.readFileSync(process.env.TIDB_CA_PATH) : undefined
             } : null,
-        }
-        return await createConnection(options);
-    } catch (err) {
-        throw new Error(`Failed to connect to TiDB cluster: ${err.message}`);
-    }
-}
-
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
+});
 
 export async function getPosts(parentID) {
-    let conn = await connectToDB();
     let parentRequirement = "IS NULL"
     if (parentID) {
         parentRequirement = "= "+parentID;
     }
-    let [rows] = await conn.query(`
+    let [rows] = await pool.query(`
         SELECT posts.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags
         FROM posts
         LEFT JOIN postsToTags ON posts.postID = postsToTags.postID
@@ -54,14 +45,12 @@ export async function getPosts(parentID) {
 }
 
 export async function checkDuplicates(user, email){
-    let conn = await connectToDB();
-   
     //list of username duplicates
-    const [users] = await conn.query(
+    const [users] = await pool.query(
         'SELECT * FROM users WHERE username = ?', [user]
     );
     //list of email duplicates
-    const [emails] = await conn.query(
+    const [emails] = await pool.query(
         'SELECT * FROM users WHERE email = ?', [email]
     );
 
@@ -72,10 +61,9 @@ export async function checkDuplicates(user, email){
 
 
 export async function makePost(postData) {
-    let conn = await connectToDB();
     const datePosted = Date.now()
 
-    const [result] = await conn.query(
+    const [result] = await pool.query(
         `INSERT INTO posts (parentID, posterID, title, content, datePosted) VALUES (?, ?, ?, ?, ?);`, 
         [postData['parentID'], postData['posterID'], postData['title'], postData['content'], datePosted]
     )
@@ -83,7 +71,7 @@ export async function makePost(postData) {
 
     if (postData.tags) {
         postData.tags.forEach(tag => {
-        conn.query(
+        pool.query(
             `INSERT INTO postsToTags (postID, tag) VALUES (?, ?);`, 
             [postId, tag]
         )
@@ -94,10 +82,8 @@ export async function makePost(postData) {
     
 
 export async function auth(email, pword){
-    let conn = await connectToDB();
-   
     //pulls account based on email and tries to check pword entered
-    const [account] = await conn.query(
+    const [account] = await pool.query(
         'SELECT pword FROM users WHERE email = ?', [email]
     );
 
@@ -113,8 +99,7 @@ export async function auth(email, pword){
 }
 
 export async function signUp(user, email, pword){
-    let conn = await connectToDB();
-    const [rows] = await conn.query(
+    const [rows] = await pool.query(
         'INSERT INTO users (username, email, pword) VALUES (?, ?, ?)', [user, email, pword]
     );
 
