@@ -9,13 +9,15 @@ async function toggleReplies(button) {
     }
 
     button.querySelector('.btn-label').textContent = "Hide Replies";
-    
-    // Find the .post-replies inside this post
-    const res = await fetch(`http://localhost:8000/loadReplies/${post.dataset.id}`, {method: "GET"});
-    const replies = await res.json()
-    replies.forEach(replyData => {
-        insertReply(replyData)
-    })
+
+    if (repliesContainer.children.length <= 1) {
+        // Find the .post-replies inside this post
+        const res = await fetch(`http://localhost:8000/loadReplies/${post.dataset.id}`, {method: "GET"});
+        const replies = await res.json()
+        replies.forEach(replyData => {
+            insertReply(replyData)
+        })
+    }
 }
 
 
@@ -56,6 +58,8 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
         return;
     }
 
+    // Close modal and reset form
+
     // // If images uploaded, append them
     // if (imageFiles.length > 0) {
     //     const imgContainer = postDiv.querySelector('.uploaded-images');
@@ -78,27 +82,16 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
     const newPostChipsContainer = document.getElementById('new-post-chips')
     const postTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
 
+    document.getElementById('new-post-modal').classList.add('hidden');
+    this.reset();
+
     let postData = {
         title: postTitle,
         content: postContent,
         tags: postTags
     }
-    
-    const [id, date] = await fetch("http://localhost:8000/makePost", {
-        method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-    });
-    postData['postID'] = id
-    postData['datePosted'] = date
-    insertPost(postData, first=true);
-
-    // Close modal and reset form
-    document.getElementById('new-post-modal').classList.add('hidden');
-    this.reset();
+    console.log(postData)
+    addPostOrReply(postData, insertPost);
 });
 
 
@@ -141,9 +134,10 @@ function insertReply(replyData, first=false) {
     replyElement.dataset.id = replyData['postID'];
 
     // Set title, content, date, etc.
+    const datePosted = new Date(replyData['datePosted'])
     replyElement.querySelector("#reply-text").textContent = replyData['content']
     replyElement.querySelector("#reply-date").textContent = ''
-    replyElement.querySelector("#reply-date").textContent = 'Replied on ' + replyData['datePosted'].toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})
+    replyElement.querySelector("#reply-date").textContent = 'Replied on ' + datePosted.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})
 
     // If images uploaded, append them
     // if (replyData.images.length > 0) {
@@ -163,9 +157,14 @@ function insertReply(replyData, first=false) {
     // }
 
     // Insert reply into the current post's replies section
-    const replies = window.currentReplyTarget.querySelector('.post-replies');
-    replies.appendChild(replyDiv);
-    replies.classList.remove('hidden'); // Show replies if hidden
+    const postContainer = document.querySelector(`[data-id="${replyData['parentID']}"]`);
+    const replyContainer = postContainer.querySelector('.post-replies');
+    if ((!first) || postContainer.children.length < 2) {
+        replyContainer.appendChild(replyElement);
+    }
+    else {
+        replyContainer.insertBefore(replyElement, replyContainer.children[1]);
+    }
 }
 
 // Helper function to escape HTML to prevent XSS
@@ -221,19 +220,24 @@ document.getElementById('reply-form').addEventListener('submit', async function(
         'content': content,
         'images': imageFiles
     }
+    addPostOrReply(replyData, insertReply)
+});
+
+async function addPostOrReply(elementData, insertElement) {
+    console.log(elementData)
     const res = await fetch("http://localhost:8000/makePost", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(replyData)
+        body: JSON.stringify(elementData)
     });
     [postID, date] = await res.json()
-    replyData['postID'] = postID
-    replyData['datePosted'] = date
-    insertReply(replyData, first=true);
-});
+    elementData['postID'] = postID
+    elementData['datePosted'] = date
+    insertElement(elementData, first=true);
+}
 
 // Helper: Escape HTML to prevent XSS
 function escapeHtml(str) {
