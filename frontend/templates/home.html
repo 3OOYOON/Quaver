@@ -54,18 +54,18 @@
 
     <!-- Post Template -->
     <template id="post">
-        <div class="container forum-post">
+        <div class="container forum-post" data-id="">
             <div class="post-header">
                 <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
                 <div class="user-info">
                     <strong class="post-username">JaneDoe42</strong>
-                    <span class="post-date">Posted on May 15, 2025</span>
+                    <span class="post-date"></span>
                 </div>
             </div>
             <div class="post-content">
                 <div class="post-tags"></div>
-                <h2 class="post-title">Hello World</h2>
-                <p class="post-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis porro iure quaerat aliquam!</p>
+                <h2 class="post-title"></h2>
+                <p class="post-text"></p>
                 <img src="/static/images/profile_picture.jpg" class="avatar" alt="Profile Picture">
             </div>
             <!-- Post actions: reply and show replies -->
@@ -81,14 +81,16 @@
             </div>
             <!-- Replies will go here if any -->
             <div class="post-replies hidden">
-                <div class="reply">
-                    <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
-                    <div class="reply-content">
-                    <strong>User123</strong>
-                    <span class="post-date">Replied on May 15, 2025</span>
-                    <p>Interesting take! I think...</p>
+                <template id="reply">
+                    <div class="reply">
+                        <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
+                        <div class="reply-content">
+                            <strong>User123</strong>
+                            <span id="reply-date" class="post-date">Replied on May 15, 2025</span>
+                            <p id="reply-text">Interesting take! I think...</p>
+                        </div>
                     </div>
-                </div>
+                </template>
                 <div class="reply">
                     <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
                     <div class="reply-content">

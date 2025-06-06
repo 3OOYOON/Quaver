@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import * as fs from "fs";
 import { createConnection } from "mysql2/promise";
 import { arrayBuffer } from "stream/consumers";
-import { randomInt } from "crypto";
+// import { randomInt } from "crypto";
 // const bcrypt = require('bcrypt');
 
 
@@ -28,12 +28,17 @@ async function connectToDB() {
 }
 
 
-export async function getPosts() {
+export async function getPosts(parentID) {
     let conn = await connectToDB();
+    let parentRequirement = "IS NULL"
+    if (parentID) {
+        parentRequirement = "= "+parentID;
+    }
     let [rows] = await conn.query(`
         SELECT posts.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags
         FROM posts
         LEFT JOIN postsToTags ON posts.postID = postsToTags.postID
+        WHERE posts.parentID ${parentRequirement}
         GROUP BY posts.postID
         ORDER BY datePosted DESC LIMIT 10;`
     );
@@ -42,7 +47,7 @@ export async function getPosts() {
             rows[i].tags = rows[i].tags.split(",");
         }
         else {
-            rows[i].tags = []
+            rows[i].tags = [];
         }
     }
     return rows;
@@ -68,19 +73,23 @@ export async function checkDuplicates(user, email){
 
 export async function makePost(postData) {
     let conn = await connectToDB();
+    const datePosted = Date.now()
 
     const [result] = await conn.query(
-        `INSERT INTO posts (title, content, datePosted) VALUES (?, ?, ?);`, 
-        [postData['title'], postData['content'], postData['datePosted']]
+        `INSERT INTO posts (parentID, posterID, title, content, datePosted) VALUES (?, ?, ?, ?, ?);`, 
+        [postData['parentID'], postData['posterID'], postData['title'], postData['content'], datePosted]
     )
-    const lastInsertedId = result.insertId;
+    const postId = result.insertId;
 
-    postData.tags.forEach(tag => {
+    if (postData.tags) {
+        postData.tags.forEach(tag => {
         conn.query(
             `INSERT INTO postsToTags (postID, tag) VALUES (?, ?);`, 
-            [lastInsertedId, tag]
+            [postId, tag]
         )
     });
+    }
+    return [postId, datePosted];
 }
     
 

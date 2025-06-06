@@ -1,16 +1,21 @@
 async function toggleReplies(button) {
     // Find the closest .forum-post ancestor
     const post = button.closest('.forum-post');
-    // Find the .post-replies inside this post
-    const replies = post.querySelector('.post-replies');
-    if (!replies) return;
-    if (replies.classList.contains('hidden')) {
-        replies.classList.remove('hidden');
-        button.querySelector('.btn-label').textContent = "Hide Replies";
-    } else {
-        replies.classList.add('hidden');
-        button.querySelector('.btn-label').textContent = "Replies";
+    const repliesContainer = post.querySelector('.post-replies')
+    repliesContainer.classList.toggle('hidden');
+    if (repliesContainer.classList.contains('hidden')) {
+        button.querySelector('.btn-label').textContent = "Show Replies";
+        return;
     }
+
+    button.querySelector('.btn-label').textContent = "Hide Replies";
+    
+    // Find the .post-replies inside this post
+    const res = await fetch(`http://localhost:8000/loadReplies/${post.dataset.id}`, {method: "GET"});
+    const replies = await res.json()
+    replies.forEach(replyData => {
+        insertReply(replyData)
+    })
 }
 
 
@@ -39,11 +44,10 @@ document.getElementById('close-modal-btn').addEventListener('click', function() 
 // });
 
 
-document.getElementById('new-post-form').addEventListener('submit', function(e) {
+document.getElementById('new-post-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const postTitle = document.getElementById('post-title').value.trim();
     const postContent = document.getElementById('post-content').value.trim();
-    const postDate = Date.now()
     const imageInput = document.getElementById('post-images');
     const imageFiles = Array.from(imageInput.files);
 
@@ -74,21 +78,23 @@ document.getElementById('new-post-form').addEventListener('submit', function(e) 
     const newPostChipsContainer = document.getElementById('new-post-chips')
     const postTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
 
-    const postData = {
+    let postData = {
         title: postTitle,
         content: postContent,
-        datePosted: postDate,
         tags: postTags
     }
-    insertPost(postData, first=true);
-
-    fetch("http://localhost:8000/makePost", {
+    
+    const [id, date] = await fetch("http://localhost:8000/makePost", {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(postData)});
+        body: JSON.stringify(postData)
+    });
+    postData['postID'] = id
+    postData['datePosted'] = date
+    insertPost(postData, first=true);
 
     // Close modal and reset form
     document.getElementById('new-post-modal').classList.add('hidden');
@@ -99,8 +105,8 @@ document.getElementById('new-post-form').addEventListener('submit', function(e) 
 // Helper function to insert posts at top of main
 function insertPost(postData, first=false) {
     const postTemplate = document.getElementById('post');
-    const postContainer = document.querySelector('main');
-    const postElement = postTemplate.content.cloneNode(true);
+    const postElement = document.importNode(postTemplate.content.firstElementChild, true);
+    postElement.dataset.id = postData['postID'];
 
     // Set title, content, date, etc.
     postElement.querySelector(".post-title").textContent = postData['title']
@@ -118,6 +124,7 @@ function insertPost(postData, first=false) {
         tagsContainer.appendChild(tagEl);
     });
 
+    const postContainer = document.querySelector('main');
     if ((!first) || postContainer.children.length < 2) {
         postContainer.appendChild(postElement);
     }
@@ -128,7 +135,37 @@ function insertPost(postData, first=false) {
 
 // Helper function to insert posts at top of main
 function insertReply(replyData, first=false) {
+    const replyTemplate = document.getElementById('reply');
     
+    const replyElement = document.importNode(replyTemplate.content.firstElementChild, true);
+    replyElement.dataset.id = replyData['postID'];
+
+    // Set title, content, date, etc.
+    replyElement.querySelector("#reply-text").textContent = replyData['content']
+    replyElement.querySelector("#reply-date").textContent = ''
+    replyElement.querySelector("#reply-date").textContent = 'Replied on ' + replyData['datePosted'].toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})
+
+    // If images uploaded, append them
+    // if (replyData.images.length > 0) {
+    //     const imgContainer = replyDiv.querySelector('.uploaded-images');
+    //     replyData.images.forEach(file => {
+    //         const reader = new FileReader();
+    //         reader.onload = function(e) {
+    //             const img = document.createElement('img');
+    //             img.src = e.target.result;
+    //             img.className = 'avatar';
+    //             img.alt = 'Uploaded Image';
+    //             img.style.margin = "5px";
+    //             imgContainer.appendChild(img);
+    //         };
+    //         reader.readAsDataURL(file);
+    //     });
+    // }
+
+    // Insert reply into the current post's replies section
+    const replies = window.currentReplyTarget.querySelector('.post-replies');
+    replies.appendChild(replyDiv);
+    replies.classList.remove('hidden'); // Show replies if hidden
 }
 
 // Helper function to escape HTML to prevent XSS
@@ -146,9 +183,9 @@ function escapeHtml(str) {
 // This takes alot from how new posts works
 
 // Open the reply modal
-function openReplyModal(postElement) {
+function openReplyModal(buttonElement) {
   // Store the post element being replied to for later use
-  window.currentReplyTarget = postElement;
+  window.currentReplyTarget = buttonElement.closest(".forum-post")
   document.getElementById('reply-modal').classList.remove('hidden');
 }
 
@@ -163,59 +200,39 @@ document.getElementById('reply-modal').addEventListener('click', function(e) {
 });
 
 // Handle reply form submission
-document.getElementById('reply-form').addEventListener('submit', function(e) {
-  e.preventDefault();
-  const content = document.getElementById('reply-content').value.trim();
-  const imageInput = document.getElementById('reply-images');
-  const imageFiles = Array.from(imageInput.files);
+document.getElementById('reply-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const content = document.getElementById('reply-content').value.trim();
+    const imageInput = document.getElementById('reply-images');
+    const imageFiles = Array.from(imageInput.files);
 
-  if (imageFiles.length > 10) {
-    alert('You can upload a maximum of 10 images.');
-    return;
-  }
-
-  // Create reply element
-  const replyDiv = document.createElement('div');
-  replyDiv.className = 'reply';
-  replyDiv.innerHTML = `
-    <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
-    <div class="reply-content">
-      <strong>You</strong>
-      <span class="post-date">Replied just now</span>
-      <p>${escapeHtml(content)}</p>
-      <div class="uploaded-images"></div>
-    </div>
-  `;
-
-  // If images uploaded, append them
-  if (imageFiles.length > 0) {
-    const imgContainer = replyDiv.querySelector('.uploaded-images');
-    imageFiles.forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.className = 'avatar';
-        img.alt = 'Uploaded Image';
-        img.style.margin = "5px";
-        imgContainer.appendChild(img);
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-
-  // Insert reply into the current post's replies section
-  if (window.currentReplyTarget) {
-    const replies = window.currentReplyTarget.querySelector('.post-replies');
-    if (replies) {
-      replies.appendChild(replyDiv);
-      replies.classList.remove('hidden'); // Show replies if hidden
+    if (imageFiles.length > 10) {
+        alert('You can upload a maximum of 10 images.');
+        return;
     }
-  }
 
-  // Close modal and reset form
-  document.getElementById('reply-modal').classList.add('hidden');
-  this.reset();
+    // Close modal and reset form
+    document.getElementById('reply-modal').classList.add('hidden');
+    this.reset();
+
+    // Create reply element
+    let replyData = {
+        'parentID': window.currentReplyTarget.dataset.id,
+        'content': content,
+        'images': imageFiles
+    }
+    const res = await fetch("http://localhost:8000/makePost", {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(replyData)
+    });
+    [postID, date] = await res.json()
+    replyData['postID'] = postID
+    replyData['datePosted'] = date
+    insertReply(replyData, first=true);
 });
 
 // Helper: Escape HTML to prevent XSS

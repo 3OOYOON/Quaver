@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors');
-const connection = require('./connect-to-db')
+const connection = require('./utils')
 
 const HOST_SITE = 'http://localhost'
 const FRONTEND_PORT = 3000
@@ -23,11 +23,17 @@ app.use(cors({
 app.post('/makePost', async (req, res)=>{
     const postData = req.body;
     const response = await connection.makePost(postData);
-    res.send("Added post.")
+    res.json(response)
 })
 
 app.get('/loadPosts', async (req, res)=>{
-    const response = await connection.getPosts();
+    const response = await connection.getPosts(null);
+    res.json(response);
+})
+
+app.get('/loadReplies/:parentID', async (req, res)=>{
+    parentID = req.params.parentID
+    const response = await connection.getPosts(parentID);
     res.json(response);
 })
 
