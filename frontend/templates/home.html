@@ -82,7 +82,7 @@
                     <img src="/static/icons/ic--baseline-chat-bubble.svg" alt="Reply" class="reply-icon">
                     <span class="btn-label">Reply</span>
                 </button>
-                <button type="button" class="icon-btn toggle-replies-btn" onclick="toggleReplies(this)">
+                <button type="button" id="toggle-replies-btn" class="icon-btn" onclick="toggleReplies(this)">
                     <img src="/static/icons/ic--baseline-keyboard-return.svg" alt="Show Replies" class="show-reply">
                     <span class="btn-label">Show Replies</span>
                 </button>
@@ -93,9 +93,9 @@
                     <div class="reply">
                         <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
                         <div class="reply-content">
-                            <strong>User123</strong>
-                            <span id="reply-date" class="post-date">Replied on May 15, 2025</span>
-                            <p id="reply-text">Interesting take! I think...</p>
+                            <strong id="reply-user"></strong>
+                            <span id="reply-date" class="post-date"></span>
+                            <p id="reply-text"></p>
                         </div>
                     </div>
                 </template>

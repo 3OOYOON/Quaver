@@ -26,13 +26,17 @@ export async function getPosts(parentID) {
         parentRequirement = "= "+parentID;
     }
     let [rows] = await pool.query(`
-        SELECT posts.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags
-        FROM posts
-        LEFT JOIN postsToTags ON posts.postID = postsToTags.postID
-        WHERE posts.parentID ${parentRequirement}
-        GROUP BY posts.postID
-        ORDER BY datePosted DESC LIMIT 10;`
-    );
+        SELECT p.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags , (
+            SELECT COUNT(*)
+            FROM posts
+            WHERE posts.parentID = p.postID
+        ) AS numReplies
+        FROM posts p
+            LEFT JOIN postsToTags ON p.postID=postsToTags.postID
+            WHERE p.parentID ${parentRequirement}
+            GROUP BY p.postID
+            ORDER BY p.datePosted DESC LIMIT 10;
+        `);
     for (let i=0; i<rows.length; i++) {
         if (rows[i].tags) {
             rows[i].tags = rows[i].tags.split(",");

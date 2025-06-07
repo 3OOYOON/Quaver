@@ -88,6 +88,15 @@ function insertPost(postData, first=false) {
     postElement.querySelector(".post-text").textContent = postData['content']
     postElement.querySelector(".post-date").textContent = ''
     postElement.querySelector(".post-date").textContent = 'Posted on '+ date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})
+
+    console.log(postData)
+    if (postData['numReplies'] == 0) {
+        postElement.querySelector("#toggle-replies-btn").textContent = `No replies yet.`
+        postElement.querySelector("#toggle-replies-btn").disabled = true; 
+    }
+    else {
+        postElement.querySelector("#toggle-replies-btn").textContent = `Show ${postData['numReplies']} replies`
+    }
     
     // Render tags
     const tagsContainer = postElement.querySelector('.post-tags');
