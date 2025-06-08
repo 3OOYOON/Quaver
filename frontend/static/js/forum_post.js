@@ -50,8 +50,7 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
     e.preventDefault();
     const postTitle = document.getElementById('post-title').value.trim();
     const postContent = document.getElementById('post-content').value.trim();
-    const imageInput = document.getElementById('post-images');
-    const imageFiles = Array.from(imageInput.files);
+    const imageFiles = Array.from(document.getElementById('post-images').files);
 
     if (imageFiles.length > 10) {
         alert('You can upload a maximum of 10 images.');
@@ -66,24 +65,27 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
     this.reset();
 
     // If images uploaded, append them
-    let postImages = []
-    let postImage = ""
-    imageFiles.forEach(file => {
-        const reader = new FileReader();
-        reader.addEventListener('load', function () {
-            postImage = reader.result;
-        });
-        reader.readAsDataURL(file);
-    })
-    // console.log(imageFiles)
-    console.log(postImage)
-    jsdflkjaslgk()
+    // let postImages = []
+    // let postImage = ""
+    // imageFiles.forEach(file => {
+    //     const reader = new FileReader();
+    //     reader.addEventListener('load', async function () {
+    //         // console.log(reader.result)
+    //         postImage = await reader.result;
+    //         console.log(postImage)
+    //     });
+    //     reader.readAsDataURL(file);
+    // })
+    // // console.log(imageFiles)
+    // console.log(postImage)
+    // jsdflkjaslgk()
 
     let postData = {
         title: postTitle,
         content: postContent,
         tags: postTags,
-        images: postImages
+        images: '',
+        imageFiles: imageFiles
     }
     addPostOrReply(postData, insertPost);
 });
@@ -215,26 +217,30 @@ document.getElementById('reply-form').addEventListener('submit', async function(
 
     // Create reply element
     let replyData = {
-        'parentID': window.currentReplyTarget.dataset.id,
-        'content': content,
-        'images': imageFiles
+        parentID: window.currentReplyTarget.dataset.id,
+        content: content,
+        images: '',
+        imageFiles: imageFiles
     }
 
     addPostOrReply(replyData, insertReply)
 });
 
 async function addPostOrReply(elementData, insertElement) {
+    const elementFormData = dictToFormData(elementData)
+    console.log(elementFormData)
     const res = await fetch(`http://localhost:8000/makePost`, {
         method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(elementData)
+        body: elementFormData
     });
-    [postID, date] = await res.json()
+    [postID, date, images] = await res.json()
     elementData['postID'] = postID
     elementData['datePosted'] = date
+    elementData['images'] = images
     insertElement(elementData, first=true);
 }
 
@@ -246,4 +252,24 @@ function escapeHtml(str) {
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'
     })[m];
   });
+}
+
+function dictToFormData(dict) {
+    console.log(dict)
+    let formData = new FormData();
+
+    for (const key in dict) {
+        console.log(key)
+        const value = dict[key];
+        if (Array.isArray(dict[key])) {
+            for (const item of dict[key]) {
+                formData.append(key, item);
+            }
+        } 
+        else {
+            formData.append(key, value);
+        }
+    }
+    console.log(formData)
+    return formData;
 }

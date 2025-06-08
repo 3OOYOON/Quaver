@@ -120,3 +120,4 @@ function resetNewPostChips() {
 
 document.getElementById('new-post-modal').addEventListener('classChange', resetNewPostChips);
 document.getElementById('new-post-form').addEventListener('reset', resetNewPostChips);
+
