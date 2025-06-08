@@ -84,11 +84,14 @@
                 </button>
                 <button type="button" id="toggle-replies-btn" class="icon-btn" onclick="toggleReplies(this)">
                     <img src="/static/icons/ic--baseline-keyboard-return.svg" alt="Show Replies" class="show-reply">
-                    <span class="btn-label">Show Replies</span>
+                    <span id="toggle-replies-btn-label" class="btn-label">Show Replies</span>
                 </button>
             </div>
             <!-- Replies will go here if any -->
             <div class="post-replies hidden">
+                <div class="no-replies">
+                    <h3>No replies yet</h3>
+                </div>
                 <template id="reply">
                     <div class="reply">
                         <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">

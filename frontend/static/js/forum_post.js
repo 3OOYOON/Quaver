@@ -10,7 +10,7 @@ async function toggleReplies(button) {
 
     button.querySelector('.btn-label').textContent = "Hide Replies";
 
-    if (repliesContainer.children.length <= 1) {
+    if (repliesContainer.children.length <= 2) {
         // Find the .post-replies inside this post
         const res = await fetch(`http://localhost:8000/loadReplies/${post.dataset.id}`, {method: "GET"});
         const replies = await res.json()
@@ -58,7 +58,6 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
         return;
     }
 
-
     // Get selected tags
     const newPostChipsContainer = document.getElementById('new-post-chips')
     const postTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
@@ -66,11 +65,25 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
     document.getElementById('new-post-modal').classList.add('hidden');
     this.reset();
 
+    // If images uploaded, append them
+    let postImages = []
+    let postImage = ""
+    imageFiles.forEach(file => {
+        const reader = new FileReader();
+        reader.addEventListener('load', function () {
+            postImage = reader.result;
+        });
+        reader.readAsDataURL(file);
+    })
+    // console.log(imageFiles)
+    console.log(postImage)
+    jsdflkjaslgk()
+
     let postData = {
         title: postTitle,
         content: postContent,
         tags: postTags,
-        imageFiles: imageFiles
+        images: postImages
     }
     addPostOrReply(postData, insertPost);
 });
@@ -88,15 +101,6 @@ function insertPost(postData, first=false) {
     postElement.querySelector(".post-text").textContent = postData['content']
     postElement.querySelector(".post-date").textContent = ''
     postElement.querySelector(".post-date").textContent = 'Posted on '+ date.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})
-
-    console.log(postData)
-    if (postData['numReplies'] == 0) {
-        postElement.querySelector("#toggle-replies-btn").textContent = `No replies yet.`
-        postElement.querySelector("#toggle-replies-btn").disabled = true; 
-    }
-    else {
-        postElement.querySelector("#toggle-replies-btn").textContent = `Show ${postData['numReplies']} replies`
-    }
     
     // Render tags
     const tagsContainer = postElement.querySelector('.post-tags');
@@ -106,27 +110,19 @@ function insertPost(postData, first=false) {
         tagEl.textContent = tag;
         tagsContainer.appendChild(tagEl);
     });
-    
-    // If images uploaded, append them
-    const imgContainer = postElement.querySelector('#post-image-container');
-    console.log(postData);
-    if (postData["imageFiles"]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const img = document.createElement('img');
-            img.src = e.target.result;
-            img.className = 'avatar';
-            img.alt = 'Uploaded Image';
-            img.style.margin = "5px";
-            imgContainer.appendChild(img);
-        };
-        postData["imageFiles"].forEach(file => {
-            reader.readAsDataURL(file);
-        });
-    }
 
-    // 
-    
+    // Render images
+    let imgElement;
+    const imgContainer = postElement.querySelector('#post-image-container')
+    postData["images"].forEach(image => {
+        imgElement = document.createElement('img');
+        imgElement.src = image;
+        imgElement.className = 'avatar';
+        imgElement.alt = 'Uploaded Image';
+        imgContainer.appendChild(imgElement);
+    });
+        
+    // Add post
     const postContainer = document.querySelector('main');
     if ((!first) || postContainer.children.length < 2) {
         postContainer.appendChild(postElement);
@@ -209,9 +205,13 @@ document.getElementById('reply-form').addEventListener('submit', async function(
         return;
     }
 
-    // Close modal and reset form
+    // Close modal, reset form, and open replies
     document.getElementById('reply-modal').classList.add('hidden');
     this.reset();
+
+    if (window.currentReplyTarget.querySelector('.post-replies').classList.contains("hidden")) {
+        await toggleReplies(window.currentReplyTarget.querySelector('#toggle-replies-btn'))
+    }
 
     // Create reply element
     let replyData = {
@@ -219,6 +219,7 @@ document.getElementById('reply-form').addEventListener('submit', async function(
         'content': content,
         'images': imageFiles
     }
+
     addPostOrReply(replyData, insertReply)
 });
 

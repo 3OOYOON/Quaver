@@ -26,16 +26,12 @@ export async function getPosts(parentID) {
         parentRequirement = "= "+parentID;
     }
     let [rows] = await pool.query(`
-        SELECT p.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags , (
-            SELECT COUNT(*)
-            FROM posts
-            WHERE posts.parentID = p.postID
-        ) AS numReplies
-        FROM posts p
-            LEFT JOIN postsToTags ON p.postID=postsToTags.postID
-            WHERE p.parentID ${parentRequirement}
-            GROUP BY p.postID
-            ORDER BY p.datePosted DESC LIMIT 10;
+        SELECT posts.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags
+        FROM posts
+        LEFT JOIN postsToTags ON posts.postID=postsToTags.postID
+        WHERE posts.parentID ${parentRequirement}
+        GROUP BY posts.postID
+        ORDER BY posts.datePosted DESC LIMIT 10;
         `);
     for (let i=0; i<rows.length; i++) {
         if (rows[i].tags) {
@@ -43,6 +39,12 @@ export async function getPosts(parentID) {
         }
         else {
             rows[i].tags = [];
+        }
+        if (rows[i].images) {
+            rows[i].images = rows[i].tags.split(".");
+        }
+        else {
+            rows[i].images = [];
         }
     }
     return rows;
@@ -66,10 +68,11 @@ export async function checkDuplicates(user, email){
 
 export async function makePost(postData) {
     const datePosted = Date.now()
+    const images = postData['images'].join('.')
 
     const [result] = await pool.query(
-        `INSERT INTO posts (parentID, posterID, title, content, datePosted) VALUES (?, ?, ?, ?, ?);`, 
-        [postData['parentID'], postData['posterID'], postData['title'], postData['content'], datePosted]
+        `INSERT INTO posts (parentID, posterID, title, content, datePosted, images) VALUES (?, ?, ?, ?, ?, ?);`, 
+        [postData['parentID'], postData['posterID'], postData['title'], postData['content'], datePosted, images]
     )
     const postId = result.insertId;
 
