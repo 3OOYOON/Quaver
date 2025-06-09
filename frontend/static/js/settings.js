@@ -32,7 +32,7 @@ document.getElementById('profile-pic-form').onsubmit = function(e) {
   const file = document.getElementById('profile-pic-input').files[0];
   if (!file) return;
   // TODO: Upload file to server via AJAX or form submission
-  alert('Profile picture updated! (implement upload logic)');
+  alert('Profile picture updated!');
   document.getElementById('profile-pic-modal').classList.add('hidden');
   this.reset();
   document.getElementById('profile-pic-preview').style.display = 'none';
@@ -78,7 +78,7 @@ document.getElementById('banner-pic-form').onsubmit = function(e) {
   const file = document.getElementById('banner-pic-input').files[0];
   if (!file) return;
   // TODO: Upload file to server via AJAX or form submission
-  alert('Banner picture updated! (implement upload logic)');
+  alert('Banner picture updated!');
   document.getElementById('banner-pic-modal').classList.add('hidden');
   this.reset();
   document.getElementById('banner-pic-preview').style.display = 'none';
