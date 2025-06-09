@@ -1,0 +1,10 @@
+FROM node:latest
+
+WORKDIR /usr/src/app
+COPY . .
+
+ENV FRONTEND_PORT=5119
+ENV BACKEND_PORT=5219
+EXPOSE 5119
+
+CMD ["node", "app.js"]

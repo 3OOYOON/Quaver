@@ -29,7 +29,7 @@ async function signUp() {
     }
 
     //check duplicates in db
-    const res = await fetch("http://localhost:8000/dupCheck/" + username + "/" + email, {method: "GET"});
+    const res = await fetch(`http://localhost:8000/dupCheck/${username}/${email}`, {method: "GET"});
     const check = await res.json();
     
     if (check[1]) {

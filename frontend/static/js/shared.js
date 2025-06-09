@@ -1,6 +1,6 @@
 const availableTags = ["Classical", "Jazz", "Electronic", "New-age", "Funk", "R&B", "Punk", 
                        "Acoustic", "Country", "Rock", "Reggae", "Pop", "Hip Hop", "Blues", 
-                       "Folk", "Christian", "Rap"];
+                       "Folk", "Christian", "Rap", "J-Pop", "K-Pop"];
 
 // For search bar
 initChipInput({
@@ -105,7 +105,7 @@ function initChipInput({ containerId, inputId, suggestionsId, maxChips = 5 }) {
   chipsContainer.style.position = 'relative';
   suggestions.style.position = 'absolute';
   suggestions.style.left = '0';
-  suggestions.style.top = '110%';
+  suggestions.style.top = '80%';
   suggestions.style.width = '100%';
   chipsContainer.appendChild(suggestions);
 }
@@ -120,3 +120,4 @@ function resetNewPostChips() {
 
 document.getElementById('new-post-modal').addEventListener('classChange', resetNewPostChips);
 document.getElementById('new-post-form').addEventListener('reset', resetNewPostChips);
+

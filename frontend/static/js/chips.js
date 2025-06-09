@@ -89,7 +89,7 @@ document.addEventListener('click', function(e) {
 newPostChipsContainer.style.position = 'relative';
 newPostSuggestions.style.position = 'absolute';
 newPostSuggestions.style.left = '0';
-newPostSuggestions.style.top = '110%';
+newPostSuggestions.style.top = '80%';
 newPostSuggestions.style.width = '100%';
 newPostChipsContainer.appendChild(newPostSuggestions);
 
