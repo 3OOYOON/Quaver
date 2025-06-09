@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root{
   --base-clr: #242038;
+  --main-bg-clr: #2d2846; 
   --line-clr: #42434a;
   --hover-clr: #725ac1;
   --text-clr: #e6e6ef;
@@ -144,9 +145,12 @@ body{
   background-color: var(--hover-clr);
 }
 
-main{
+main {
+  background-color: var(--main-bg-clr);
   padding: min(30px, 7%);
+  min-height: 100vh; 
 }
+
 main p{
   color: var(--secondary-text-clr);
   margin-top: 5px;
