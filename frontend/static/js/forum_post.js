@@ -50,6 +50,17 @@ async function loadMorePosts() {
     });
 }
 
+async function loadPostsByTags() {
+    const searchedChips = document.querySelector(".search-bar-chips")
+    const postTags = Array.from(searchedChips.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
+
+    const res = await fetch(`http://localhost:8000/loadTagPosts/${postTags}`, {method: "GET"});
+    let allData = await res.json();
+    allData.forEach(postData => {
+        insertPost(postData);
+    });
+}
+
 
 
 document.getElementById('open-modal-btn').addEventListener('click', function() {

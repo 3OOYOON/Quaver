@@ -48,18 +48,24 @@ app.get('/loadPosts', async (req, res)=>{
 
 app.get('/loadSomePosts/:postsToSkip', async (req, res)=>{
     const postsToSkip = req.params.postsToSkip.split(',')
-    const response = await conn.getPosts(null, postsToSkip);
+    const response = await conn.getPosts(null, postsToSkip, []);
     res.json(response);
 })
 
-app.get('/uploads/images/:imageName', async (req, res)=>{
-    const response = await conn.getPosts(null);
+app.get('/loadTagPosts/:tags', async (req, res)=>{
+    const tags = req.params.postsToSkip.split(',')
+    const response = await conn.getPosts(null, [], tags);
     res.json(response);
 })
+
+// app.get('/uploads/images/:imageName', async (req, res)=>{
+//     const response = await conn.getPosts(null);
+//     res.json(response);
+// })
 
 app.get('/loadReplies/:parentID', async (req, res)=>{
     parentID = req.params.parentID
-    const response = await conn.getPosts(parentID, []);
+    const response = await conn.getPosts(parentID, [], []);
     res.json(response);
 })
 
