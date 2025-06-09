@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="/static/css/style.css">
   <link rel="stylesheet" href="/static/css/settings.css">
   <script type="text/javascript" src="/static/js/sidebar.js" defer></script>
+  <script type="text/javascript" src="/static/js/settings.js" defer></script>
 </head>
 <body>
   <nav id="sidebar">
@@ -47,57 +48,65 @@
     <div class="container">
         <h2>Basic Information</h2>
         <div class="settings-row">
-            <div class="settings-name-col">
-                <div>
-                    <p>Display Name</p>
-                </div>
-                <div>
-                    <p>Email</p>
-                </div>
-                <div>
-                    <p>Name</p>
-                </div>
-            </div>
-            <div class="settings-val-col">
-                <div>
-                    <p>ExampleDisplayName</p>
-                </div>
-                <div>
-                    <p>example@test.com</p>
-                </div>
-                <div>
-                    <p>Sample Name</p>
-                </div>
-            </div>
+          <div class="settings-item">
+            <span class="settings-label">Display Name</span>
+            <span class="settings-value">ExampleDisplayName</span>
+          </div>
+          <div class="settings-item">
+            <span class="settings-label">Email</span>
+            <span class="settings-value">example@test.com</span>
+          </div>
+          <div class="settings-item">
+            <span class="settings-label">Name</span>
+            <span class="settings-value">Sample Name</span>
+          </div>
         </div>
     </div>
 
     <div class="container">
         <h2>Profile Personalization</h2>
         <div class="settings-row">
-            <div class="settings-name-col">
-                <div>
-                    <p>Profile picture</p>
-                </div>
-                <div>
-                    <p>Banner picture</p>
-                </div>
-            </div>
-            <div class="settings-val-col">
-                <div class="settings-button">
-                    Update
-                </div>
-                <div class="settings-button">
-                    Update
-                </div>
-            </div>
+          <div class="settings-item">
+            <span class="settings-label">Profile picture</span>
+            <button type="button" id="open-profile-pic-modal" class="update-btn">Update</button>
+          </div>
+          <div class="settings-item">
+            <span class="settings-label">Banner picture</span>
+            <button type="button" id="open-banner-pic-modal" class="update-btn">Update</button>
+          </div>
         </div>
     </div>
 
-    <div class="container">
-        <h2>Delete account</h2>
+    <!-- Profile Picture Update Modal -->
+  <div id="profile-pic-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" id="close-profile-pic-modal">&times;</span>
+      <h2>Update Profile Picture</h2>
+      <form id="profile-pic-form">
+        <input type="file" id="profile-pic-input" accept="image/*" required>
+        <div id="profile-pic-preview-container">
+          <img id="profile-pic-preview" src="" alt="Preview" style="display:none; max-width:150px; border-radius:50%; margin:1em 0;">
+        </div>
+        <button type="submit" class="submit-btn">Save</button>
+      </form>
     </div>
-    <div class="settings-button settings-update-all">Update All</div>
+  </div>
+
+    <!-- Banner Picture Update Modal -->
+  <div id="banner-pic-modal" class="modal hidden">
+    <div class="modal-content">
+      <span class="close-btn" id="close-banner-pic-modal">&times;</span>
+      <h2>Update Banner Picture</h2>
+      <form id="banner-pic-form">
+        <input type="file" id="banner-pic-input" accept="image/*" required>
+        <div id="banner-pic-preview-container">
+          <img id="banner-pic-preview" src="" alt="Preview" style="display:none; max-width:100%; border-radius:0.5em; margin:1em 0;">
+        </div>
+        <button type="submit" class="submit-btn">Save</button>
+      </form>
+    </div>
+
+</div>
 </main>
 </body>
 </html>
