@@ -7,29 +7,29 @@ const newPostChipInput = document.getElementById('new-post-chip-input');
 const newPostSuggestions = document.getElementById('new-post-chip-suggestions');
 
 function updateNewPostSuggestions() {
-  const val = newPostChipInput.value.toLowerCase();
-  newPostSuggestions.innerHTML = '';
-  if (!val) {
-    newPostSuggestions.style.display = 'none';
-    return;
-  }
-  const selectedTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
-  const filtered = availableTags.filter(tag =>
-    tag.toLowerCase().includes(val) &&
-    !selectedTags.includes(tag)
-  );
-  if (filtered.length === 0) {
-    newPostSuggestions.style.display = 'none';
-    return;
-  }
-  filtered.forEach(tag => {
-    const div = document.createElement('div');
-    div.className = 'chip-suggestion';
-    div.dataset.tag = tag;
-    div.textContent = tag;
-    newPostSuggestions.appendChild(div);
-  });
-  newPostSuggestions.style.display = 'block';
+    const val = newPostChipInput.value.toLowerCase();
+    newPostSuggestions.innerHTML = '';
+    if (!val) {
+        newPostSuggestions.style.display = 'none';
+        return;
+    }
+    const selectedTags = Array.from(newPostChipsContainer.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
+    const filtered = availableTags.filter(tag =>
+        tag.toLowerCase().includes(val) &&
+        !selectedTags.includes(tag)
+    );
+    if (filtered.length === 0) {
+        newPostSuggestions.style.display = 'none';
+        return;
+    }
+    filtered.forEach(tag => {
+        const div = document.createElement('div');
+        div.className = 'chip-suggestion';
+        div.dataset.tag = tag;
+        div.textContent = tag;
+        newPostSuggestions.appendChild(div);
+    });
+    newPostSuggestions.style.display = 'block';
 }
 
 function addNewPostChip(tag) {

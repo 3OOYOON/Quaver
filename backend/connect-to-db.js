@@ -104,16 +104,16 @@ export async function auth(email, pword){
 
 export async function signUp(user, email, pword){
     let conn = await connectToDB();
-    //const uuid = crypto.randomUUID();
-    //add this to db \/\/\/
+
     const [rows] = await conn.query(
         'INSERT INTO users (username, email, pword) VALUES (?, ?, ?)', [user, email, pword]
     );
     
-    const [curUser] = await conn.query(
-        'SELECT userID FROM users WHERE username = ?', [user]
-    );
 
-    const res = curUser[0].userID;
-    return res;
+    // const [curUser] = await conn.query(
+    //     'SELECT userID FROM users WHERE email = ?', [email]
+    // );
+
+    // const res = curUser[0].userID;
+    return true;
 }
