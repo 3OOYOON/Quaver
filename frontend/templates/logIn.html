@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/static/css/searchbar.css">
   <script type="text/javascript" src="/static/js/sidebar.js" defer></script>
   <script type="text/javascript" src="/static/js/login.js" defer></script>
+  <script type="text/javascript" src="/static/js/user.js" defer></script>
 </head>
 <body>
   <nav id="sidebar">
@@ -25,12 +26,6 @@
           <span>Home</span>
         </a>
       </li>
-      <li class="active">
-        <a href="/templates/settings.html">
-          <img src="/static/icons/ic--round-settings.svg" alt="Home" style="width:25px; vertical-align:middle;">
-          <span>Settings</span>
-        </a>
-      </li>
       <li>
         <a href="/templates/signUp.html">
           <img src="/static/icons/ic--round-person.svg" alt="Profile" style="width:25px; vertical-align:middle;">
@@ -42,8 +37,8 @@
   <main>
 
     <div class="heading">
-      <h2>Create a New Account</h2>
-      <p>Enter your information below to sign up!</p>
+      <h2>Log In</h2>
+      <p>Enter your account information below.</p>
     </div>
     
     <div class="search-bar-container">
@@ -55,7 +50,7 @@
     </div>
 
     <div>
-        <button class="signup-btn" onclick="logIn(email, pword);"> 
+        <button class="signup-btn" onclick="console.log(logIn(email, pword).then());"> 
             <h3>Log In</h3>
 
         </button>

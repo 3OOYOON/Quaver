@@ -3,7 +3,6 @@ import * as fs from "fs";
 import { createConnection } from "mysql2/promise";
 import { arrayBuffer } from "stream/consumers";
 import { randomInt } from "crypto";
-const bcrypt = require('bcrypt');
 
 
 dotenv.config();
@@ -89,25 +88,32 @@ export async function auth(email, pword){
    
     //pulls account based on email and tries to check pword entered
     const [account] = await conn.query(
-        'SELECT pword FROM users WHERE email = ?', [email]
+        'SELECT userID, pword FROM users WHERE email = ?', [email]
     );
 
     //if no account returned, can't check pword, both checks false
     if (account.length != 1){
-        const negRes = [0, 0]
-        return negRes
+        const negRes = [0, 0];
+        return negRes;
     } 
 
-    const res = [1, (account[0].pword == pword)]
+    const res = [1, (account[0].pword == pword), account[0].userID];
 
     return res;
 }
 
 export async function signUp(user, email, pword){
     let conn = await connectToDB();
+    //const uuid = crypto.randomUUID();
+    //add this to db \/\/\/
     const [rows] = await conn.query(
         'INSERT INTO users (username, email, pword) VALUES (?, ?, ?)', [user, email, pword]
     );
+    
+    const [curUser] = await conn.query(
+        'SELECT userID FROM users WHERE username = ?', [user]
+    );
 
-    return true;
+    const res = curUser[0].userID;
+    return res;
 }

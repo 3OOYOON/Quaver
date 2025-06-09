@@ -15,8 +15,7 @@ async function logIn() {
 
   const res = await fetch("http://localhost:8000/logIn/" + email + "/" + pword, {method: "GET"});
   const check = await res.json();
-  
-  console.log(check);
+
   if (!check[0]) {
     document.getElementById("response").innerHTML = "There is no account associated with that email. Please create an account before signing in.";
     return false;
@@ -26,5 +25,9 @@ async function logIn() {
   }
 
   document.getElementById("response").innerHTML = "Login is valid."
-  return true;
+
+  //setUser(check[2]);
+  return check[2];
 }
+
+
