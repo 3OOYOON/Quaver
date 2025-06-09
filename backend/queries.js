@@ -19,19 +19,32 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-export async function getPosts(parentID) {
+export async function getPosts(parentID, postsToSkip) {
     let parentRequirement = "IS NULL"
     if (parentID) {
         parentRequirement = "= "+parentID;
     }
-    let [rows] = await pool.query(`
+    let idRequirement = ''
+    if (postsToSkip.length != 0) {
+        idRequirement = 'AND posts.postID NOT IN (?)'
+    }
+    const query = `
         SELECT posts.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags
         FROM posts
         LEFT JOIN postsToTags ON posts.postID=postsToTags.postID
         WHERE posts.parentID ${parentRequirement}
+        ${idRequirement}
         GROUP BY posts.postID
-        ORDER BY posts.datePosted DESC LIMIT 10;
-        `);
+        ORDER BY posts.datePosted DESC LIMIT 20;
+        `
+    let rows;
+    if (postsToSkip.length != 0) {
+        [rows] = await pool.query(query, [postsToSkip])
+    }
+    else {
+        [rows] = await pool.query(query)
+    }
+
     for (let i=0; i<rows.length; i++) {
         if (rows[i].tags) {
             rows[i].tags = rows[i].tags.split(",");

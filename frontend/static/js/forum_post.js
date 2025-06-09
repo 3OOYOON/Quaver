@@ -30,6 +30,26 @@ async function refreshPosts() {
     });
 }
 
+async function loadMorePosts() {
+    currentPosts = []
+    
+    document.querySelectorAll('.forum-post').forEach(function(post) {
+        currentPosts.push(post.dataset.id)
+    });
+
+    const res = await fetch(`http://localhost:8000/loadSomePosts/${currentPosts}`, {method: "GET"});
+    let allData = await res.json();
+    if (allData.length != 20) {
+        document.querySelector('#more-posts-btn-container').classList.add("hidden")
+    }
+    else {
+        allData.shift();
+    }
+    allData.forEach(postData => {
+        insertPost(postData);
+    });
+}
+
 
 
 document.getElementById('open-modal-btn').addEventListener('click', function() {
@@ -115,16 +135,16 @@ function insertPost(postData, first=false) {
     }
         
     // Add post
-    const postContainer = document.querySelector('main');
-    if ((!first) || postContainer.children.length < 2) {
+    const postContainer = document.querySelector('#posts-container');
+    if ((!first) || postContainer.children.length == 0) {
         postContainer.appendChild(postElement);
     }
     else {
-        postContainer.insertBefore(postElement, postContainer.children[1]);
+        postContainer.insertBefore(postElement, postContainer.children[0]);
     }
 }
 
-// Helper function to insert posts at top of main
+// Helper function to insert replies inside of their post
 function insertReply(replyData, first=false) {
     const replyTemplate = document.getElementById('reply');
     

@@ -240,3 +240,16 @@ main p{
     }
   }
 }
+
+.btn {
+    border: none;
+    background-color: var(--accent-clr);
+    color: var(--text-clr);
+    cursor: pointer;
+    transition: background 0.2s;
+    border-radius: 0.5em;
+}
+
+.btn:hover {
+    background-color: var(--hover-clr);
+}

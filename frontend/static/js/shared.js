@@ -105,7 +105,7 @@ function initChipInput({ containerId, inputId, suggestionsId, maxChips = 5 }) {
   chipsContainer.style.position = 'relative';
   suggestions.style.position = 'absolute';
   suggestions.style.left = '0';
-  suggestions.style.top = '110%';
+  suggestions.style.top = '80%';
   suggestions.style.width = '100%';
   chipsContainer.appendChild(suggestions);
 }

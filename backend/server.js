@@ -42,7 +42,13 @@ app.post('/makePost', upload.array('imageFiles'), async (req, res)=>{
 })
 
 app.get('/loadPosts', async (req, res)=>{
-    const response = await conn.getPosts(null);
+    const response = await conn.getPosts(null, []);
+    res.json(response);
+})
+
+app.get('/loadSomePosts/:postsToSkip', async (req, res)=>{
+    const postsToSkip = req.params.postsToSkip.split(',')
+    const response = await conn.getPosts(null, postsToSkip);
     res.json(response);
 })
 
@@ -53,7 +59,7 @@ app.get('/uploads/images/:imageName', async (req, res)=>{
 
 app.get('/loadReplies/:parentID', async (req, res)=>{
     parentID = req.params.parentID
-    const response = await conn.getPosts(parentID);
+    const response = await conn.getPosts(parentID, []);
     res.json(response);
 })
 

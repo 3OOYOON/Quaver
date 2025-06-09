@@ -52,59 +52,69 @@
           <input type="text" placeholder="Search..." class="search-bar-chip-input" id="search-bar-chip-input" autocomplete="off">
         </div>
       </div>
-      <button type="button" class="new-post-btn" id="open-modal-btn">
+      <button type="button" class="new-post-btn btn" id="open-modal-btn">
         <img src="/static/icons/ic--baseline-create.svg" alt="New Post" class="new-post-icon">
       </button>
       <div class="chip-suggestions" id="chip-suggestions"></div>
     </div>
 
     <!-- Post Template -->
-    <template id="post">
-        <div class="container forum-post" data-id="">
-            <div class="post-header">
-                <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
-                <div class="user-info">
-                    <strong class="post-username">JaneDoe42</strong>
-                    <span class="post-date"></span>
-                </div>
-            </div>
-            <div class="post-content">
-                <div class="post-tags"></div>
-                <h2 class="post-title"></h2>
-                <p class="post-text"></p>
-                <div id="post-image-container">
-                    <!-- <img src="/static/images/profile_picture.jpg" class="avatar" alt="Profile Picture"> -->
-                </div>
-            </div>
-            <!-- Post actions: reply and show replies -->
-            <div class="post-actions">
-                <button type="button" class="icon-btn reply-btn" onclick="openReplyModal(this)">
-                    <img src="/static/icons/ic--baseline-chat-bubble.svg" alt="Reply" class="reply-icon">
-                    <span class="btn-label">Reply</span>
-                </button>
-                <button type="button" id="toggle-replies-btn" class="icon-btn" onclick="toggleReplies(this)">
-                    <img src="/static/icons/ic--baseline-keyboard-return.svg" alt="Show Replies" class="show-reply">
-                    <span id="toggle-replies-btn-label" class="btn-label">Show Replies</span>
-                </button>
-            </div>
-            <!-- Replies will go here if any -->
-            <div class="post-replies hidden">
-                <div class="no-replies">
-                    <h3>No replies yet</h3>
-                </div>
-                <template id="reply">
-                    <div class="reply">
-                        <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
-                        <div class="reply-content">
-                            <strong id="reply-user"></strong>
-                            <span id="reply-date" class="post-date"></span>
-                            <p id="reply-text"></p>
-                        </div>
+    <div id="posts-container">
+        <template id="post">
+            <div class="container forum-post" data-id="">
+                <div class="post-header">
+                    <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic">
+                    <div class="user-info">
+                        <strong class="post-username">JaneDoe42</strong>
+                        <span class="post-date"></span>
                     </div>
-                </template>
+                </div>
+                <div class="post-content">
+                    <div class="post-tags"></div>
+                    <h2 class="post-title"></h2>
+                    <p class="post-text"></p>
+                    <div id="post-image-container">
+                        <!-- <img src="/static/images/profile_picture.jpg" class="avatar" alt="Profile Picture"> -->
+                    </div>
+                </div>
+                <!-- Post actions: reply and show replies -->
+                <div class="post-actions">
+                    <button type="button" class="icon-btn reply-btn btn" onclick="openReplyModal(this)">
+                        <img src="/static/icons/ic--baseline-chat-bubble.svg" alt="Reply" class="reply-icon">
+                        <span class="btn-label">Reply</span>
+                    </button>
+                    <button type="button" id="toggle-replies-btn" class="icon-btn btn" onclick="toggleReplies(this)">
+                        <img src="/static/icons/ic--baseline-keyboard-return.svg" alt="Show Replies" class="show-reply">
+                        <span id="toggle-replies-btn-label" class="btn-label">Show Replies</span>
+                    </button>
+                </div>
+                <!-- Replies will go here if any -->
+                <div class="post-replies hidden">
+                    <div class="no-replies">
+                        <h3>No replies yet</h3>
+                    </div>
+                    <template id="reply">
+                        <div class="reply">
+                            <img src="/static/images/profile_picture.jpg" alt="Profile Picture" class="profile-pic small">
+                            <div class="reply-content">
+                                <strong id="reply-user"></strong>
+                                <span id="reply-date" class="post-date"></span>
+                                <p id="reply-text"></p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
             </div>
-        </div>
-    </template>
+        </template>
+    </div>
+    <div id="more-posts-btn-container">
+        <button id="more-posts-btn" class="btn" type="button" onclick="loadMorePosts()">
+            <h2>Load more posts</h2>
+        </button>
+    </div>
+    <div id="no-posts-alert" class="hidden">
+        <h3>No posts found</h3>
+    </div>
 
   <!-- New Post Modal -->
   <div id="new-post-modal" class="modal hidden">
@@ -130,7 +140,7 @@
         <div id="new-post-chip-suggestions" class="chip-suggestions"></div>
         <input type="file" id="post-images" accept="image/*" multiple>
         <small style="color: var(--secondary-text-clr);">You can upload up to 10 images.</small>
-        <button type="submit" class="submit-btn">Post</button>
+        <button type="submit" class="submit-btn btn">Post</button>
       </form>
     </div>
   </div>
@@ -144,7 +154,7 @@
         <textarea id="reply-content" placeholder="Write your reply..." required></textarea>
         <input type="file" id="reply-images" accept="image/*" multiple>
         <small style="color: var(--secondary-text-clr);">You can upload up to 10 images.</small>
-        <button type="submit" class="submit-btn">Reply</button>
+        <button type="submit" class="submit-btn btn">Reply</button>
       </form>
     </div>
   </div>
