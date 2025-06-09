@@ -42,7 +42,7 @@ app.post('/makePost', upload.array('imageFiles'), async (req, res)=>{
 })
 
 app.get('/loadPosts', async (req, res)=>{
-    const response = await conn.getPosts(null, []);
+    const response = await conn.getPosts(null, [], []);
     res.json(response);
 })
 
@@ -53,7 +53,11 @@ app.get('/loadSomePosts/:postsToSkip', async (req, res)=>{
 })
 
 app.get('/loadTagPosts/:tags', async (req, res)=>{
-    const tags = req.params.postsToSkip.split(',')
+    // console.log(req.params.tags)
+    let tags = req.params.tags.split(',')
+    if (tags == ['none']) {
+        tags = []
+    } 
     const response = await conn.getPosts(null, [], tags);
     res.json(response);
 })

@@ -65,14 +65,14 @@ function initChipInput({ containerId, inputId, suggestionsId, maxChips = 5 }) {
     chipInput.value = '';
     suggestions.style.display = 'none';
 
-    refreshPosts()
+    loadPostsByTags()
   }
 
   // Event Listeners
   chipsContainer.addEventListener('click', e => {
     if (e.target.classList.contains('chip-remove')) {
         e.target.parentElement.remove();
-        refreshPosts()
+        loadPostsByTags()
     }
     chipInput.focus();
   });
