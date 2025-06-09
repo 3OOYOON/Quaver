@@ -42,19 +42,23 @@ async function signUp() {
 
 
     //should hash password
-    
-
 
     //send everything to database
     const upload = await fetch("http://localhost:8000/signUp/" + username + "/" + email + "/" + pword, {method: "POST"});
-    const user = await upload.json();
-    //returns userid
-    if (user){
-        document.getElementById("response").innerHTML = "nice!";
-        return user;
-    }
+    const done = await upload.json();
 
+    // //returns userid
+    // if (user){
+    //     document.getElementById("response").innerHTML = "nice!";
+    //     return user;
+    // }
+
+    if (done){
+        document.getElementById("response").innerHTML = "nice!";
+        return true;
+    }
+    
     document.getElementById("response").innerHTML = "Something went wrong :(";
-    return 0;
+    return false;
 }
 

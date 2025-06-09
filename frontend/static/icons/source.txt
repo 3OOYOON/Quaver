@@ -1,0 +1,2 @@
+The icoons used for this project are sourced from Google Material Icons
+https://icon-sets.iconify.design/ic/page-2.html
