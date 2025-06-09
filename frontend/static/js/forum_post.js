@@ -24,7 +24,7 @@ async function toggleReplies(button) {
 async function refreshPosts() {
     const res = await fetch(`http://localhost:8000/loadPosts`, {method: "GET"});
     const allData = await res.json();
-
+    document.querySelector('.posts-container');
     allData.forEach(postData => {
         insertPost(postData);
     });
@@ -51,14 +51,15 @@ async function loadMorePosts() {
 }
 
 async function loadPostsByTags() {
-    const searchedChips = document.querySelector(".search-bar-chips")
-    const postTags = Array.from(searchedChips.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
+    refreshPosts()
+    // const searchedChips = document.querySelector(".search-bar-chips")
+    // const postTags = Array.from(searchedChips.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
 
-    const res = await fetch(`http://localhost:8000/loadTagPosts/${postTags}`, {method: "GET"});
-    let allData = await res.json();
-    allData.forEach(postData => {
-        insertPost(postData);
-    });
+    // const res = await fetch(`http://localhost:8000/loadTagPosts/${postTags}`, {method: "GET"});
+    // let allData = await res.json();
+    // allData.forEach(postData => {
+    //     insertPost(postData);
+    // });
 }
 
 
@@ -240,8 +241,7 @@ async function addPostOrReply(formData, insertElement) {
     insertElement(elementData, first=true);
 }
 
-
-// Helper function to escape HTML to prevent XSS
+// Helper function for escapeing HTML to prevent XSS
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, function(m) {
     return ({
