@@ -1,8 +1,6 @@
 import dotenv from "dotenv";
 import * as fs from "fs";
-import { arrayBuffer } from "stream/consumers";
 import * as mysql from "mysql2/promise"
-// import pool from "mysql2/promise"
 
 dotenv.config();
 
@@ -42,7 +40,7 @@ export async function getPosts(parentID) {
             rows[i].tags = [];
         }
         if (rows[i].images) {
-            rows[i].images = rows[i].images.split(".");
+            rows[i].images = rows[i].images.split(",");
         }
         else {
             rows[i].images = [];
@@ -53,23 +51,20 @@ export async function getPosts(parentID) {
 
 
 export async function makePost(postData) {
-    const datePosted = Date.now()
-    
     const [result] = await pool.query(
         `INSERT INTO posts (parentID, posterID, title, content, datePosted, images) VALUES (?, ?, ?, ?, ?, ?);`, 
-        [postData['parentID'], postData['posterID'], postData['title'], postData['content'], datePosted, postData['images']]
+        [postData['parentID'], postData['posterID'], postData['title'], postData['content'], postData['datePosted'], postData['images']]
     )
-    const postId = result.insertId;
+    const postID = result.insertId;
 
-    if (postData.tags) {
-        postData.tags.forEach(tag => {
+    postData.tags.forEach(tag => {
         pool.query(
             `INSERT INTO postsToTags (postID, tag) VALUES (?, ?);`, 
-            [postId, tag]
+            [postID, tag]
         )
-    });
-    }
-    return [postId, datePosted, postData['images']];
+    })
+    postData['postID'] = postID
+    return postData;
 }
 
 export async function checkDuplicates(user, email){

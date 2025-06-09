@@ -6,31 +6,47 @@ const fs = require('fs');
 
 const conn = require('./queries');
 const upload = require('./file-upload');
+const { json } = require('body-parser');
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
-// app.use(express.json({ limit: '50mb' }));
 app.use(cors({
     origin: `http://localhost:3000`,
     methods: ['GET', 'POST'],
     credentials: true
 }))
-app.use('/uploads/images', express.static(path.join(__dirname, 'uploads', 'images')));
+app.use(express.static('shared'));
 
 
 app.post('/makePost', upload.array('imageFiles'), async (req, res)=>{
-    let postData = req.body;
-    console.log(postData)
-    postData.images = ""
-    if (req.files) {
-        postData.images = req.files.map(file => `/uploads/images/${file.filename}`).join(',');
+    const datePosted = Date.now()
+    let origPostData = req.body;
+
+    if (origPostData['tags']) {
+        origPostData['tags'] = JSON.parse(origPostData['tags']);
     }
-    const response = await conn.makePost(postData);
-    res.json(response)
+    else {
+        origPostData['tags'] = [];
+    }
+    
+    let imagesAsList = []
+    origPostData['datePosted'] = datePosted;
+    if (req.files && req.files.length > 0) {
+        imagesAsList = req.files.map(file => `/uploads/images/${file.filename}`)
+    }
+    origPostData['images'] = imagesAsList.join(',');
+    let newPostData = await conn.makePost(origPostData)
+    newPostData['images'] = imagesAsList
+    res.json(newPostData)
 })
 
 app.get('/loadPosts', async (req, res)=>{
+    const response = await conn.getPosts(null);
+    res.json(response);
+})
+
+app.get('/uploads/images/:imageName', async (req, res)=>{
     const response = await conn.getPosts(null);
     res.json(response);
 })

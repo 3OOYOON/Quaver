@@ -64,30 +64,17 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
     document.getElementById('new-post-modal').classList.add('hidden');
     this.reset();
 
-    // If images uploaded, append them
-    // let postImages = []
-    // let postImage = ""
-    // imageFiles.forEach(file => {
-    //     const reader = new FileReader();
-    //     reader.addEventListener('load', async function () {
-    //         // console.log(reader.result)
-    //         postImage = await reader.result;
-    //         console.log(postImage)
-    //     });
-    //     reader.readAsDataURL(file);
-    // })
-    // // console.log(imageFiles)
-    // console.log(postImage)
-    // jsdflkjaslgk()
+    const formData = new FormData();
+    formData.append('title', postTitle);
+    formData.append('content', postContent);
+    formData.append('tags', JSON.stringify(postTags));
+    imageFiles.forEach(file => {
+        formData.append('imageFiles', file);
+    });
+    console.log(postTags)
+    console.log(formData.get('tags'))
 
-    let postData = {
-        title: postTitle,
-        content: postContent,
-        tags: postTags,
-        images: '',
-        imageFiles: imageFiles
-    }
-    addPostOrReply(postData, insertPost);
+    addPostOrReply(formData, insertPost);
 });
 
 
@@ -106,23 +93,26 @@ function insertPost(postData, first=false) {
     
     // Render tags
     const tagsContainer = postElement.querySelector('.post-tags');
-    postData.tags.forEach(tag => {
-        const tagEl = document.createElement('span');
-        tagEl.className = 'chip';
-        tagEl.textContent = tag;
-        tagsContainer.appendChild(tagEl);
-    });
+    if (postData.tags) {
+        postData.tags.forEach(tag => {
+            const tagEl = document.createElement('span');
+            tagEl.className = 'chip';
+            tagEl.textContent = tag;
+            tagsContainer.appendChild(tagEl);
+        });
+    }
 
     // Render images
-    let imgElement;
     const imgContainer = postElement.querySelector('#post-image-container')
-    postData["images"].forEach(image => {
-        imgElement = document.createElement('img');
-        imgElement.src = image;
-        imgElement.className = 'avatar';
-        imgElement.alt = 'Uploaded Image';
-        imgContainer.appendChild(imgElement);
-    });
+    if (postData.images) {
+        postData.images.forEach(image => {
+            const imgElement = document.createElement('img');
+            imgElement.src = `http://localhost:8000/${image}`;
+            imgElement.className = 'post-image';
+            imgElement.alt = 'Uploaded Image';
+            imgContainer.appendChild(imgElement);
+        });
+    }
         
     // Add post
     const postContainer = document.querySelector('main');
@@ -147,23 +137,6 @@ function insertReply(replyData, first=false) {
     replyElement.querySelector("#reply-date").textContent = ''
     replyElement.querySelector("#reply-date").textContent = 'Replied on ' + datePosted.toLocaleDateString("en-US", {year: 'numeric', month: 'long', day: 'numeric'})
 
-    // If images uploaded, append them
-    // if (replyData.images.length > 0) {
-    //     const imgContainer = replyDiv.querySelector('.uploaded-images');
-    //     replyData.images.forEach(file => {
-    //         const reader = new FileReader();
-    //         reader.onload = function(e) {
-    //             const img = document.createElement('img');
-    //             img.src = e.target.result;
-    //             img.className = 'avatar';
-    //             img.alt = 'Uploaded Image';
-    //             img.style.margin = "5px";
-    //             imgContainer.appendChild(img);
-    //         };
-    //         reader.readAsDataURL(file);
-    //     });
-    // }
-
     // Insert reply into the current post's replies section
     const postContainer = document.querySelector(`[data-id="${replyData['parentID']}"]`);
     const replyContainer = postContainer.querySelector('.post-replies');
@@ -173,6 +146,7 @@ function insertReply(replyData, first=false) {
     else {
         replyContainer.insertBefore(replyElement, replyContainer.children[1]);
     }
+    replyContainer.querySelector(".no-replies").classList.add("hidden")
 }
 
 
@@ -216,31 +190,22 @@ document.getElementById('reply-form').addEventListener('submit', async function(
     }
 
     // Create reply element
-    let replyData = {
-        parentID: window.currentReplyTarget.dataset.id,
-        content: content,
-        images: '',
-        imageFiles: imageFiles
-    }
+    const formData = new FormData();
+    formData.append('parentID', window.currentReplyTarget.dataset.id);
+    formData.append('content', content);
+    imageFiles.forEach(file => {
+        formData.append('imageFiles', file);
+    });
 
-    addPostOrReply(replyData, insertReply)
+    addPostOrReply(formData, insertReply)
 });
 
-async function addPostOrReply(elementData, insertElement) {
-    const elementFormData = dictToFormData(elementData)
-    console.log(elementFormData)
+async function addPostOrReply(formData, insertElement) {
     const res = await fetch(`http://localhost:8000/makePost`, {
         method: "POST",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: elementFormData
+        body: formData
     });
-    [postID, date, images] = await res.json()
-    elementData['postID'] = postID
-    elementData['datePosted'] = date
-    elementData['images'] = images
+    const elementData = await res.json()
     insertElement(elementData, first=true);
 }
 
@@ -252,24 +217,4 @@ function escapeHtml(str) {
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;', "'":'&#39;'
     })[m];
   });
-}
-
-function dictToFormData(dict) {
-    console.log(dict)
-    let formData = new FormData();
-
-    for (const key in dict) {
-        console.log(key)
-        const value = dict[key];
-        if (Array.isArray(dict[key])) {
-            for (const item of dict[key]) {
-                formData.append(key, item);
-            }
-        } 
-        else {
-            formData.append(key, value);
-        }
-    }
-    console.log(formData)
-    return formData;
 }
