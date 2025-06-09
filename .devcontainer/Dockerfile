@@ -17,3 +17,4 @@ RUN npm install body-parser --save
 RUN npm install mysql2 --save
 RUN npm install google-auth-library --save
 RUN npm install bcrypt
+RUN npm install multer --save

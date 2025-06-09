@@ -24,7 +24,14 @@ async function toggleReplies(button) {
 async function refreshPosts() {
     const res = await fetch(`http://localhost:8000/loadPosts`, {method: "GET"});
     const allData = await res.json();
-    document.querySelector('.posts-container');
+    const postsContainer = document.querySelector('#posts-container');
+
+    document.querySelector("#more-posts-btn-container").classList.remove("hidden")
+    document.querySelector("#no-posts-alert").classList.add("hidden")
+
+    while (postsContainer.childNodes.length > 2) {
+        postsContainer.removeChild(postsContainer.lastChild);
+    }
     allData.forEach(postData => {
         insertPost(postData);
     });
@@ -51,17 +58,28 @@ async function loadMorePosts() {
 }
 
 async function loadPostsByTags() {
-    refreshPosts()
-    // const searchedChips = document.querySelector(".search-bar-chips")
-    // const postTags = Array.from(searchedChips.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
+    const postsContainer = document.querySelector('#posts-container');
+    while (postsContainer.childNodes.length > 2) {
+        postsContainer.removeChild(postsContainer.lastChild);
+    }
+    const searchedChips = document.querySelector(".search-bar-chips")
+    let postTags = Array.from(searchedChips.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
+    if (postTags.length == 0) {
+        refreshPosts();
+        return;
+    }
+    console.log(`http://localhost:8000/loadTagPosts/${postTags}`)
 
-    // const res = await fetch(`http://localhost:8000/loadTagPosts/${postTags}`, {method: "GET"});
-    // let allData = await res.json();
-    // allData.forEach(postData => {
-    //     insertPost(postData);
-    // });
+    const res = await fetch(`http://localhost:8000/loadTagPosts/${postTags}`, {method: "GET"});
+    let allData = await res.json();
+    if (allData.length == 0) {
+        document.querySelector("#no-posts-alert").classList.remove("hidden")
+    }
+    allData.forEach(postData => {
+        insertPost(postData);
+    });
+    document.querySelector("#more-posts-btn-container").classList.add("hidden")
 }
-
 
 
 document.getElementById('open-modal-btn').addEventListener('click', function() {

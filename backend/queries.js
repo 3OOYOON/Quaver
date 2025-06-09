@@ -20,29 +20,46 @@ const pool = mysql.createPool({
 });
 
 export async function getPosts(parentID, postsToSkip, tags) {
+    let params = []
     let parentRequirement = "IS NULL"
-    if (parentID) {
-        parentRequirement = "= "+parentID;
-    }
     let idRequirement = ''
+    let tagRequirement = ''
+
+    if (parentID) {
+        params.push(parentID)
+        parentRequirement = "= ?";
+    }
     if (postsToSkip.length != 0) {
+        params.push(postsToSkip)
         idRequirement = 'AND posts.postID NOT IN (?)'
     }
+    if (tags.length != 0) {
+        params.push(tags)
+        tagRequirement = 'AND postsToTags.tag IN (?)'
+    }
+    
     const query = `
         SELECT posts.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags
         FROM posts
         LEFT JOIN postsToTags ON posts.postID=postsToTags.postID
         WHERE posts.parentID ${parentRequirement}
         ${idRequirement}
+        ${tagRequirement}
         GROUP BY posts.postID
         ORDER BY posts.datePosted DESC LIMIT 20;
         `
-    let rows;
-    if (postsToSkip.length != 0) {
-        [rows] = await pool.query(query, [postsToSkip])
-    }
-    else {
-        [rows] = await pool.query(query)
+    let [rows] = await pool.query(query, params)
+    if (tags.length != 0 && rows.length != 0) {
+        let ids = await rows.map(row => row['postID'])
+        const queryForAllTags = `
+            SELECT posts.*, GROUP_CONCAT(tag ORDER BY tag ASC SEPARATOR ',') AS tags
+            FROM posts
+            LEFT JOIN postsToTags ON posts.postID=postsToTags.postID
+            WHERE posts.postID IN (?)
+            GROUP BY posts.postID
+            ORDER BY posts.datePosted DESC LIMIT 20;`
+        const [newRows] = await pool.query(queryForAllTags, [ids])
+        rows = newRows
     }
 
     for (let i=0; i<rows.length; i++) {
