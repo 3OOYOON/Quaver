@@ -6,48 +6,50 @@ const chipInput = document.getElementById('search-bar-chip-input');
 const suggestions = document.getElementById('chip-suggestions');
 
 function updateSuggestions() {
-  const val = chipInput.value.toLowerCase();
-  suggestions.innerHTML = '';
-  if (!val) {
-    suggestions.style.display = 'none';
-    return;
-  }
-  const filtered = availableTags.filter(tag =>
-    tag.toLowerCase().includes(val) &&
-    !Array.from(chipsContainer.getElementsByClassName('chip')).some(chip => chip.dataset.tag === tag)
-  );
-  if (filtered.length === 0) {
-    suggestions.style.display = 'none';
-    return;
-  }
-  filtered.forEach(tag => {
-    const div = document.createElement('div');
-    div.className = 'chip-suggestion';
-    div.dataset.tag = tag;
-    div.textContent = tag;
-    suggestions.appendChild(div);
-  });
-  suggestions.style.display = 'block';
+    const val = chipInput.value.toLowerCase();
+    suggestions.innerHTML = '';
+    if (!val) {
+        suggestions.style.display = 'none';
+        return;
+    }
+    const filtered = availableTags.filter(tag =>
+        tag.toLowerCase().includes(val) &&
+        !Array.from(chipsContainer.getElementsByClassName('chip')).some(chip => chip.dataset.tag === tag)
+    );
+    if (filtered.length === 0) {
+        suggestions.style.display = 'none';
+        return;
+    }
+    filtered.forEach(tag => {
+        const div = document.createElement('div');
+        div.className = 'chip-suggestion';
+        div.dataset.tag = tag;
+        div.textContent = tag;
+        suggestions.appendChild(div);
+    });
+    suggestions.style.display = 'block';
 }
 
 // Add chip
 function addChip(tag) {
-  if (Array.from(chipsContainer.getElementsByClassName('chip')).some(chip => chip.dataset.tag === tag)) return;
-  const chip = document.createElement('span');
-  chip.className = 'chip';
-  chip.dataset.tag = tag;
-  chip.innerHTML = `${tag}<span class="chip-remove" title="Remove">&times;</span>`;
-  chipsContainer.insertBefore(chip, chipInput);
-  chipInput.value = '';
-  suggestions.style.display = 'none';
+    if (Array.from(chipsContainer.getElementsByClassName('chip')).some(chip => chip.dataset.tag === tag)) return;
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.dataset.tag = tag;
+    chip.innerHTML = `${tag}<span class="chip-remove" title="Remove">&times;</span>`;
+    chipsContainer.insertBefore(chip, chipInput);
+    chipInput.value = '';
+    suggestions.style.display = 'none';
+    loadPostsByTags()
 }
 
 // Remove chip
 chipsContainer.addEventListener('click', function(e) {
-  if (e.target.classList.contains('chip-remove')) {
-    e.target.parentElement.remove();
-  }
-  chipInput.focus();
+    if (e.target.classList.contains('chip-remove')) {
+        e.target.parentElement.remove();
+    }
+    chipInput.focus();
+    loadPostsByTags()
 });
 
 // Handle input

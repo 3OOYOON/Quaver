@@ -19,7 +19,7 @@ const pool = mysql.createPool({
     queueLimit: 0
 });
 
-export async function getPosts(parentID, postsToSkip) {
+export async function getPosts(parentID, postsToSkip, tags) {
     let parentRequirement = "IS NULL"
     if (parentID) {
         parentRequirement = "= "+parentID;
