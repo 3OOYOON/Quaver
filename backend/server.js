@@ -53,7 +53,6 @@ app.get('/loadSomePosts/:postsToSkip', async (req, res)=>{
 })
 
 app.get('/loadTagPosts/:tags', async (req, res)=>{
-    // console.log(req.params.tags)
     let tags = req.params.tags.split(',')
     if (tags == ['none']) {
         tags = []
@@ -61,11 +60,6 @@ app.get('/loadTagPosts/:tags', async (req, res)=>{
     const response = await conn.getPosts(null, [], tags);
     res.json(response);
 })
-
-// app.get('/uploads/images/:imageName', async (req, res)=>{
-//     const response = await conn.getPosts(null);
-//     res.json(response);
-// })
 
 app.get('/loadReplies/:parentID', async (req, res)=>{
     parentID = req.params.parentID

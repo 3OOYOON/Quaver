@@ -23,6 +23,7 @@ async function toggleReplies(button) {
 
 async function refreshPosts() {
     const res = await fetch(`http://localhost:8000/loadPosts`, {method: "GET"});
+    
     const allData = await res.json();
     const postsContainer = document.querySelector('#posts-container');
 
@@ -58,7 +59,6 @@ async function loadMorePosts() {
 }
 
 async function loadPostsByTags() {
-    refreshPosts()
     const postsContainer = document.querySelector('#posts-container');
     while (postsContainer.childNodes.length > 2) {
         postsContainer.removeChild(postsContainer.lastChild);
@@ -69,7 +69,6 @@ async function loadPostsByTags() {
         refreshPosts();
         return;
     }
-    console.log(`http://localhost:8000/loadTagPosts/${postTags}`)
 
     const res = await fetch(`http://localhost:8000/loadTagPosts/${postTags}`, {method: "GET"});
     let allData = await res.json();
@@ -117,8 +116,6 @@ document.getElementById('new-post-form').addEventListener('submit', async functi
     imageFiles.forEach(file => {
         formData.append('imageFiles', file);
     });
-    console.log(postTags)
-    console.log(formData.get('tags'))
 
     addPostOrReply(formData, insertPost);
 });

@@ -46,7 +46,8 @@ export async function getPosts(parentID, postsToSkip, tags) {
         ${idRequirement}
         ${tagRequirement}
         GROUP BY posts.postID
-        ORDER BY posts.datePosted DESC LIMIT 20;
+        ORDER BY posts.datePosted DESC
+        LIMIT 20;
         `
     let [rows] = await pool.query(query, params)
     if (tags.length != 0 && rows.length != 0) {
@@ -57,7 +58,7 @@ export async function getPosts(parentID, postsToSkip, tags) {
             LEFT JOIN postsToTags ON posts.postID=postsToTags.postID
             WHERE posts.postID IN (?)
             GROUP BY posts.postID
-            ORDER BY posts.datePosted DESC LIMIT 20;`
+            ORDER BY posts.datePosted DESC`
         const [newRows] = await pool.query(queryForAllTags, [ids])
         rows = newRows
     }
