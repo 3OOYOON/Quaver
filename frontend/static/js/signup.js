@@ -47,12 +47,6 @@ async function signUp() {
     const upload = await fetch("http://localhost:8000/signUp/" + username + "/" + email + "/" + pword, {method: "POST"});
     const done = await upload.json();
 
-    // //returns userid
-    // if (user){
-    //     document.getElementById("response").innerHTML = "nice!";
-    //     return user;
-    // }
-
     if (done){
         document.getElementById("response").innerHTML = "nice!";
         return true;

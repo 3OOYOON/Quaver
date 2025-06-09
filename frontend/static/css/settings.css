@@ -64,8 +64,8 @@
 }
 
 .update-btn {
-  margin-left: 0.5em; /* Add a small space to the left of the button */
-  margin-top: 0;      /* Remove extra space above the button */
+  margin-left: 0.5em;
+  margin-top: 0;    
 }
 
 .update-btn:hover, .submit-btn:hover {

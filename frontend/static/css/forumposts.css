@@ -56,18 +56,14 @@
 }
 
 #toggle-replies-btn {
-  /* position: static;
-  background: var(--line-clr); 
-  color: var(--text-clr); */
   display: flex;
   align-items: center;
   gap: 0.5em;
-  /* font-size: 1rem; */
+
   font-weight: 500;
   margin-top: 0.5em;
   min-width: 10rem;
 }
-
 
 .hidden {
   display: none;
@@ -102,7 +98,6 @@
   padding-top: 1em;          /* spacing from content */
   width: 100%;
 }
-
 
 .icon-btn {
   display: flex;

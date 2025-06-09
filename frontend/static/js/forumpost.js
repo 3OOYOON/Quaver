@@ -52,16 +52,7 @@ async function loadMorePosts() {
 
 async function loadPostsByTags() {
     refreshPosts()
-    // const searchedChips = document.querySelector(".search-bar-chips")
-    // const postTags = Array.from(searchedChips.getElementsByClassName('chip')).map(chip => chip.dataset.tag);
-
-    // const res = await fetch(`http://localhost:8000/loadTagPosts/${postTags}`, {method: "GET"});
-    // let allData = await res.json();
-    // allData.forEach(postData => {
-    //     insertPost(postData);
-    // });
 }
-
 
 
 document.getElementById('open-modal-btn').addEventListener('click', function() {
@@ -71,11 +62,6 @@ document.getElementById('open-modal-btn').addEventListener('click', function() {
 document.getElementById('close-modal-btn').addEventListener('click', function() {
   document.getElementById('new-post-modal').classList.add('hidden');
 });
-
-// Close modal when clicking outside the modal content
-// document.getElementById('new-post-modal').addEventListener('click', function(e) {
-//   if (e.target === this) this.classList.add('hidden');
-// });
 
 
 document.getElementById('new-post-form').addEventListener('submit', async function(e) {
@@ -183,7 +169,6 @@ function insertReply(replyData, first=false) {
 
 
 // This takes alot from how new posts works
-
 // Open the reply modal
 function openReplyModal(buttonElement) {
   // Store the post element being replied to for later use
