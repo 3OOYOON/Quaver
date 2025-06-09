@@ -98,6 +98,8 @@
   display: flex;
   gap: 0.5em;
   justify-content: flex-end; /* align buttons to the right */
+  margin-top: auto;          /* push to bottom */
+  padding-top: 1em;          /* spacing from content */
   width: 100%;
 }
 
@@ -124,6 +126,22 @@
     margin-left: 2rem;
     float: right;
     margin-top: 0.3rem;
+}
+
+.toggle-replies-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 0.5em;
+  background-color: var(--accent-clr);
+  color: var(--text-clr);
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 0.5em;
 }
 
 .post-tags {

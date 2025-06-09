@@ -1,40 +1,73 @@
 .settings-row {
-    margin-top: 10px;
-    display: flex;
-}
-.settings-row > div > div {
-    height: 1.5rem;
-    align-items: center;
-    margin: 12px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
 }
 
-.settings-name-col {
-    flex: 15%;
-}
-.settings-val-col {
-    flex: 85%;
-}
-
-.settings-button {
-    /* font-size: small; */
-    border: none;
-    border-radius: 5px;
-    background-color: var(--line-clr);
-    width: 8rem;
-    text-align: center;
-    margin: 8px 0px !important;
-    padding: 4px 0px !important;
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding: 0.5em 0;
 }
 
-.settings-button:hover {
-    background-color: var(--hover-clr);
+.settings-label {
+  min-width: 140px;  
+  text-align: left;
+  display: inline-block;
 }
 
-.settings-update-all {
-    height: auto !important;
-    padding: 1rem !important;
-    border: 5px solid var(--line-clr);
-    border-radius: 1rem;
-    font-size: 1.5rem;
-    width: auto !important;
+.settings-item span {
+  font-size: 1em;
+  color: var(--text-clr, #222);
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  align-items: center; justify-content: center;
+}
+
+.modal:not(.hidden) {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--base-clr, #fff);
+  color: var(--text-clr, #222);
+  padding: 2em;
+  border-radius: 1em;
+  min-width: 320px;
+  max-width: 90vw;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1em; right: 1em;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.update-btn, .submit-btn {
+  background: var(--accent-clr, #5e63ff);
+  color: var(--text-clr, #fff);
+  border: none;
+  border-radius: 0.5em;
+  padding: 0.5em 1.2em;
+  cursor: pointer;
+  margin-top: 0.5em;
+  transition: background 0.2s;
+}
+
+.update-btn {
+  margin-left: 0.5em; /* Add a small space to the left of the button */
+  margin-top: 0;      /* Remove extra space above the button */
+}
+
+.update-btn:hover, .submit-btn:hover {
+  background: var(--hover-clr, #725ac1);
 }

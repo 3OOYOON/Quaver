@@ -241,8 +241,7 @@ async function addPostOrReply(formData, insertElement) {
     insertElement(elementData, first=true);
 }
 
-
-// Helper function to escape HTML to prevent XSS
+// Helper function for escapeing HTML to prevent XSS
 function escapeHtml(str) {
   return str.replace(/[&<>"']/g, function(m) {
     return ({

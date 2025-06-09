@@ -13,19 +13,19 @@ async function signUp() {
     //checking for input
     if (!emailFormat.test(email)){
         document.getElementById("response").innerHTML = "Please enter a valid email";
-        return false;
+        return 0;
     } else if (username == ""){
         document.getElementById("response").innerHTML = "Please enter a username.";
-        return false;
+        return 0;
     } else if (pword == ""){
         document.getElementById("response").innerHTML = "Please enter a password.";
-        return false;
+        return 0;
     }
 
     //checking password confirmation
     else if (pword != cpword){
         document.getElementById("response").innerHTML = "Passwords must match.";
-        return false;
+        return 0;
     }
 
     //check duplicates in db
@@ -34,10 +34,10 @@ async function signUp() {
     
     if (check[1]) {
         document.getElementById("response").innerHTML = "That email already has an account.";
-        return false;
+        return 0;
     } else if (check[0]) {
         document.getElementById("response").innerHTML = "That username has been taken. Please enter a new username.";
-        return false;
+        return 0;
     }
 
 
@@ -46,13 +46,15 @@ async function signUp() {
 
 
     //send everything to database
-    const upload = await fetch(`http://localhost:8000/signUp/${username}/${email}/${pword}`, {method: "POST"});
-    const done = await upload.json();
-
-    if (done){
+    const upload = await fetch("http://localhost:8000/signUp/" + username + "/" + email + "/" + pword, {method: "POST"});
+    const user = await upload.json();
+    //returns userid
+    if (user){
         document.getElementById("response").innerHTML = "nice!";
-        return true;
+        return user;
     }
-    return false
+
+    document.getElementById("response").innerHTML = "Something went wrong :(";
+    return 0;
 }
 
